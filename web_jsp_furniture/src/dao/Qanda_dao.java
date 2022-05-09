@@ -54,10 +54,26 @@ public class Qanda_dao {
 		return name;		
 	}
 	
-	//답장 업데이트
+	//삭제
+		public int getDelete(String no) {
+			int result = 0;
+			String query = "delete from homepage_박건일_qanda\r\n" + 
+					"where no = '"+no+"'";		
+			try {
+				con = DBConnection.getConnection();
+				ps = con.prepareStatement(query);
+				result = ps.executeUpdate();
+			}catch(SQLException e) {
+				e.printStackTrace();
+				System.out.println("getDelete() 오류: " + query);
+			}finally {
+				DBConnection.closeDB(con, ps, rs);
+			}
+			return result;
+		}
 	
 	
-	//답장 작성 및
+	//답장 작성 및 업데이트
 		public int insertA(String no, String a_content, String a_reg_id, String a_reg_date) {
 			int result = 0;
 			String query = "update homepage_박건일_qanda\r\n" + 

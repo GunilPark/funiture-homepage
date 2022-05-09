@@ -87,7 +87,7 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 				<tbody>
 				<%for(int k = 0; k < dtos.size(); k++){ %>
 					<tr>
-						<td><a href="qanda_view.jsp?t_no=<%=dtos.get(k).getNo()%>"><%=headNum-1 %></a></td>
+						<td><a href="qanda_view.jsp?t_no=<%=dtos.get(k).getNo()%>"><%=headNum-k %></a></td>
 						<td class="t_center">
 						<a href="javascript:goView('<%=dtos.get(k).getNo()%>')"><%=dtos.get(k).getQ_title() %></a></td>
 						<td><%=dtos.get(k).getIspublic() %></td>

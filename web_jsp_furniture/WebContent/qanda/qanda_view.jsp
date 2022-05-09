@@ -113,7 +113,7 @@ if(dto.getNo() == null){
 				<% }else{%>
 				<a href="qanda_a_update.jsp?t_no=<%=dto.getNo()%>" class="butt">답글 수정</a>
 				<% } %>
-				<a href="db_qanda_delete.jsp?t_no=<%=dto.getNo()%>" class="butt">Delete</a>
+				<a href="javascript:goDelete('<%=dto.getNo()%>')" class="butt">Delete</a>
 				<% } %>
 				<%if(sessionId.equals(dto.getQ_reg_id())){ %>
 				<a href="qanda_update.jsp?t_no=<%=dto.getNo()%>" class="butt">Update</a>
@@ -127,6 +127,22 @@ if(dto.getNo() == null){
 	</div>	
 </body>
 </html>
+<form name="qanda">
+<input name="t_no" value="no">
+</form>
+<script type="text/javascript">
+function goDelete(no){
+	qanda.t_no.value = no;
+	qanda.method="post";
+	qanda.action="db_qanda_delete.jsp"
+	qanda.submit();
+	
+}
+
+</script>
+
+
+
 
 <%} %>
 
