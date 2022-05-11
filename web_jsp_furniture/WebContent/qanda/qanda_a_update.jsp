@@ -8,19 +8,16 @@ Qanda_dao dao = new Qanda_dao();
 String no = request.getParameter("t_no");
 Qanda_dto dto = dao.getView(no);
 
-if(sessionLevel.equals("")){
-	%>
-	<script type="text/javascript">
 
-	alert("잘못된 접근입니다.");
-	location.href="index.jsp";
-</script>
-	
-	
-	<% 
-}
 
+if(!sessionLevel.equals("top") && !sessionLevel.equals("maneger")){
 %>
+	<script type="text/javascript">
+		alert("로그인 하지 않았거나 글쓰기 권한이 없습니다.");
+		location.href="/index.jsp";
+	</script>
+<%	} %>
+
   
 	
 		<div id="b_left">

@@ -5,7 +5,7 @@
 
 <%
 
-	if(!sessionLevel.equals("top") && !sessionLevel.equals("maneger")){
+	if(sessionLevel.equals("")){
 %>
 		<script type="text/javascript">
 			alert("로그인 하지 않았거나 글쓰기 권한이 없습니다.");

@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import common.DBConnection;
@@ -12,6 +13,69 @@ public class Member_dao {
 	Connection 			con = null;
 	PreparedStatement 	ps  = null;
 	ResultSet 			rs  = null;
+	
+	//목록조회 전체
+		public int getTotalCount(String select,String search) {
+			int result = 0;
+			String query = "select count(*)\r\n" + 
+					"from homepage_박건일_member b\r\n" + 
+					"where "+select+" like '%"+search+"%'";
+			try {
+				con = DBConnection.getConnection();
+				ps = con.prepareStatement(query);
+				rs = ps.executeQuery();
+				if(rs.next()) {
+					result = rs.getInt(1);
+				}
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+				System.out.println("getTotalCount() 오류: " + query);
+			}finally {
+				DBConnection.closeDB(con, ps, rs);
+			}
+			
+			return result;
+		}
+	
+	// 멤버리스트
+	public ArrayList<Member_dto> getList(String select, String search, int start, int end){
+		ArrayList<Member_dto> dtos = null;
+		String query = "select * from(\r\n" + 
+				"select tbl.*, rownum as rnum\r\n" + 
+				"from\r\n" + 
+				"(select id, name, area, reg_date, level_gubun\r\n" + 
+				"from homepage_박건일_member \r\n" + 
+				"where "+select+" like '%"+search+"%'\r\n" + 
+				"order by level_gubun)tbl)\r\n" + 
+				"where rnum >="+start+" and rnum <="+end;
+		
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String id = rs.getString(1);
+				String name = rs.getString(2);
+				String area = rs.getString(3);
+				String reg_date = rs.getString(4);
+				String level_gubun = rs.getString(5);
+				String rNum = rs.getString(6);
+				//id, name, area, reg_date, level_gubun
+				Member_dto dto = new Member_dto(id, name, area, reg_date, level_gubun);
+				dtos.add(dto);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("getList() 오류" + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		System.out.println(query);
+		
+		return dtos;
+	}
+	
 	
 	// 회원정보 수정
 	public int memberUpdate(Member_dto dto){

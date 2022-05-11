@@ -34,10 +34,10 @@ public class Qanda_dao {
 		
 	}
 	//작성자 이름 받아오기
-	public String getAName(String id) {
+	public String getName(String id) {
 		String name = "";
 		String query = "select name \r\n" + 
-				"homepage_박건일_member \r\n" + 
+				"from homepage_박건일_member \r\n" + 
 				"where id = '"+id+"'\r\n";
 		try {
 			con = DBConnection.getConnection();
@@ -222,7 +222,7 @@ public class Qanda_dao {
 		String query = "select * from(\r\n" + 
 				"select tbl.*, rownum as rnum\r\n" + 
 				"from\r\n" + 
-				"(select a.no, a.q_title, a.q_content, b.name, to_char(a.q_reg_date,'yyyy-MM-dd') as reg_date,a.hit,a.ispublic\r\n" + 
+				"(select a.no, a.q_title, a.q_content, a.q_reg_id, to_char(a.q_reg_date,'yyyy-MM-dd') as reg_date,a.hit,a.ispublic,a.a_reg_id\r\n" + 
 				"from homepage_박건일_qanda a, homepage_박건일_member b\r\n" + 
 				"where a.q_reg_id = b.id\r\n" + 
 				"and "+select+" like '%"+search+"%'\r\n" + 
@@ -238,14 +238,13 @@ public class Qanda_dao {
 				String q_content = rs.getString(3);
 				String q_reg_id = rs.getString(4);
 				String q_reg_date = rs.getString(5);
-				String ispublic = rs.getString(6);
-				String hit = rs.getString(7);
-				String rNum = rs.getString(8);
-			
+				String hit = rs.getString(6);
+				String ispublic = rs.getString(7);
+				String a_reg_id = rs.getString(8);
+				String rNum = rs.getString(9);
 	//업데이트 dto순서: no,q_title,q_content,q_reg_id,q_reg_date,hit,ispublic,a_content, a_reg_id, a_reg_date;
-				Qanda_dto dto = new Qanda_dto(no,q_title,q_content,q_reg_id,q_reg_date,ispublic,hit,"", "", "");
+				Qanda_dto dto = new Qanda_dto(no,q_title,q_content,q_reg_id,q_reg_date,hit,ispublic,"", a_reg_id, "");
 				dtos.add(dto);
-				System.out.println("query는:" + query);
 			}
 		}catch(SQLException e) {
 			System.out.println("getList() 오류:" + query);
@@ -253,10 +252,8 @@ public class Qanda_dao {
 		}finally {
 			DBConnection.closeDB(con, ps, rs);
 		}
-		
-		System.out.println(query);
-		
 		return dtos;
+		
 	}
 	
 	

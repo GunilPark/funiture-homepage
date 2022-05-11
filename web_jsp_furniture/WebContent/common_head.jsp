@@ -26,7 +26,7 @@
 		<div id="b_top_menu">
 				<ul class="top_menu">
 					<%  if(sessionLevel.equals("top")){ %>
-						<li><a href="../member/member_list.jsp">Admin</a></li>
+						<li><a href="../admin_list.jsp">Admin</a></li>
 					<%	} %>
 					
 					<%  if(sessionId.equals("")){ %>

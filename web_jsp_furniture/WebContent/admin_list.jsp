@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="dto.*, dao.*, common.*,java.util.*" %>
-
 <%
 request.setCharacterEncoding("utf-8");
-Qanda_dao dao = new Qanda_dao();
+Member_dao dao = new Member_dao();
 String select = request.getParameter("t_select");
 String search = request.getParameter("t_search");
 if(select == null){
-	select = "a.q_title";
+	select = "id";
 }
 	
 if(search == null){
@@ -33,13 +32,10 @@ int start = (current_page -1) * list_setup_count + 1;
 int end   = current_page * list_setup_count;
 /* paging 설정 end*/
 
-ArrayList<Qanda_dto> dtos = dao.getList(select, search, start, end);
+ArrayList<Member_dto> dtos = dao.getList(select, search, start, end);
 int headNum = total_count-((current_page-1)*list_setup_count);
 
-
 %>
-
-
 <%@ include file="../common_head.jsp" %> 
 	
 		<div id="b_left">
@@ -47,21 +43,20 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 			<ul>
 				<li><a href="/notice/notice_list.jsp"> NOTICE</a></li>
 				<li><a href="/news/news_list.jsp">NEWS</a></li>
-				<li><a href="/qanda/qanda_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>Q & A</a></li>
+				<li><a href="/qanda/qanda_list.jsp">Q & A</a></li>
 				<li><a href="/freeboard/freeboard_list.jsp">FREE BOARD</a></li>
 				<li><a href="/etc/etc_list.jsp">ETC</a></li>
 			</ul>
 		</div>
 		<div id="b_right">
 			<p class="n_title">
-				Q & A
+				Admin
 			</p>
-			<form name="news" method="post" action="qanda_list.jsp">
+			<form name="admin" method="post" action="admin_list.jsp">
 			<p class="select_box">
 				<select class="sel_box" name="t_select">
-					<option value="a.q_title">Title</option>
-					<option value="a.q_reg_content">Q_Content</option>
-					<option value="a.a_reg_content">A_Content</option>
+					<option value="name">Name</option>
+					<option value="id">Id</option>
 				</select>
 				<input type="text" name="t_search" class="sel_text">
 				<button type="submit" class="sel_button"><i class="fa fa-search"></i> SEARCH</button>
@@ -72,50 +67,32 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 			<table class="boardList">
 				<colgroup>
 					<col width="5%">
-					<col width="45%">
-					<col width="10%">
-					<col width="10%">
+					<col width="60%">
+					<col width="5%">
 					<col width="10%">
 					<col width="14%">
 					<col width="6%">
 				</colgroup>
 				<thead>
 					<tr>
-						<th>No</th>
-						<th>Title</th>
-						<th>답변여부</th>
-						<th>공개여부</th>
-						<th>Reg Name</th>
+						<th>no</th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Area</th>
+						<th>Level</th>
 						<th>Reg Date</th>
-						<th>Hit</th>
 					</tr>
 				</thead>
 				<tbody>
 				<%for(int k = 0; k < dtos.size(); k++){ %>
 					<tr>
-					<%if(dtos.get(k).getIspublic().equals("y")||(dtos.get(k).getIspublic().equals("n")&&(sessionLevel.equals("top")||sessionLevel.equals("manager")||sessionId.equals(dtos.get(k).getQ_reg_id())))){ %>
-						<td><a href="qanda_view.jsp?t_no=<%=dtos.get(k).getNo()%>"><%=headNum-k %></a></td>
+						<td><a href=""><%=headNum-k %></a></td>
 						<td class="t_center">
-						<a href="javascript:goView('<%=dtos.get(k).getNo()%>')"><%=dtos.get(k).getQ_title() %></a></td>
-					<%}else{ %>	
-						<td><%=headNum-k %></td>
-						<td class="t_center"><%=dtos.get(k).getQ_title() %></td>
-					<%} %>
-						<%if(dtos.get(k).getA_reg_id()==null){ %>
-						<td>답변없음</td>
-						<%}else{ %>
-						<td>답변완료</td>
-						<%} %>
-						
-						<%if(dtos.get(k).getIspublic().equals("y")){ %>
-						<td><span class="fnt"><i class="fa fa-lock-open"></i></td>
-						<%}else{ %>
-						<td><span class="fnt"><i class="fa fa-lock"></i></td>
-						<%} %>
-						
-						<td><%=dao.getName(dtos.get(k).getQ_reg_id())%></td>
-						<td><%=dtos.get(k).getQ_reg_date()%></td>
-						<td><%=dtos.get(k).getHit()%></td>
+						<a href=""><%=dtos.get(k).getId()%></a></td>
+						<td><%=dtos.get(k).getName() %></td>
+						<td><%=dtos.get(k).getArea() %></td>
+						<td><%=dtos.get(k).getLevel_gubun() %></td>
+						<td><%=dtos.get(k).getReg_date() %></td>
 					</tr>
 				<%} %>
 				</tbody>
@@ -138,9 +115,6 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 			//System.out.print(pageDisplay);
 			%>
 				
-			<% if(!sessionLevel.equals("")){ %>
-				<a href="qanda_write.jsp" class="write">글쓰기</a>
-			<% } %>
 			</div>
 		</div>	
 	

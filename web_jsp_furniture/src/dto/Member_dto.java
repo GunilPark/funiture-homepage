@@ -4,11 +4,18 @@ public class Member_dto {
 	private String id,name,password,area,address,tell_1,tell_2,tell_3,
 				    gender,hobby_travel,hobby_reading,hobby_sports,
 				    reg_date,level_gubun,exit_gubun,exit_date;
-
+	public Member_dto(String id, String name, String area, String reg_date, String level_gubun) {
+		this.id = id;
+		this.name = name;
+		this.area = area;
+		this.reg_date = reg_date;
+		this.level_gubun = level_gubun;
+	}
+	
+	
 	public Member_dto(String id, String name, String password, String area, String address, String tell_1,
 			String tell_2, String tell_3, String gender, String hobby_travel, String hobby_reading, String hobby_sports,
 			String reg_date, String level_gubun, String exit_gubun, String exit_date) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;

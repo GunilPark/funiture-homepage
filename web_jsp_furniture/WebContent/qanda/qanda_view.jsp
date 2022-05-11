@@ -10,8 +10,11 @@ String no = request.getParameter("t_no");
 dao.setHitCount(no);
 
 Qanda_dto dto = dao.getView(no);
-String name = dao.getAName(dto.getA_reg_id());
+String name = dao.getName(dto.getA_reg_id());
 dto.getNo();
+
+
+
 if(dto.getNo() == null){
 	%>
 	<script>
@@ -27,7 +30,16 @@ if(dto.getNo() == null){
 
 %>
 <%@ include file="../common_head.jsp" %>  
+<% if(dto.getIspublic().equals("y")||(dto.getIspublic().equals("n")&&(sessionLevel.equals("top")||sessionLevel.equals("manager")||sessionId.equals(dto.getQ_reg_id())))){ %>	
+
 	
+<%  }else{ %>	
+		<script>
+	alert("권한이 없습니다.");
+	
+	location.href="qanda_list.jsp";
+	</script>
+	<% } %>
 		<div id="b_left">
 			<P>NOTICE & NEWS</P>
 			<ul>
@@ -115,6 +127,8 @@ if(dto.getNo() == null){
 				<% } %>
 				<a href="javascript:goDelete('<%=dto.getNo()%>')" class="butt">Delete</a>
 				<% } %>
+				
+				
 				<%if(sessionId.equals(dto.getQ_reg_id())){ %>
 				<a href="qanda_update.jsp?t_no=<%=dto.getNo()%>" class="butt">Update</a>
 				<% } %>
