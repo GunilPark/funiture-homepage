@@ -139,13 +139,13 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 function goPage(pageNumber){
     pageForm.t_nowPage.value = pageNumber;
     pageForm.method="post";
-    pageForm.action="qanda_list.jsp";
+    pageForm.action="admin_list.jsp";
     pageForm.submit();      
  }
  
 function goView(no){
 	view.t_no.value = no;
-	view.action = "qanda_view.jsp?t_no="+no;
+	view.action = "admin_view.jsp?t_no="+no;
 	view.submit();
 }
 

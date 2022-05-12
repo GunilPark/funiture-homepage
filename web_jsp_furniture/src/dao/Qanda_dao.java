@@ -51,6 +51,7 @@ public class Qanda_dao {
 		}finally {
 			DBConnection.closeDB(con, ps, rs);
 		}
+		System.out.println("query:" + query);
 		return name;		
 	}
 	
@@ -97,25 +98,28 @@ public class Qanda_dao {
 	//뷰생성
 		public Qanda_dto getView(String no) {
 			Qanda_dto dto = null;
-			String query = "select a.no, a.q_title,a.q_content, b.name, to_char(a.q_reg_date,'yyyy-MM-dd') as q_reg_date, a.hit, a.ispublic, a.a_content, a.a_reg_id, to_char(a.a_reg_date,'yyyy-MM-dd') as a_reg_date \r\n" + 
+			
+			
+			String query = "select a.no, a.q_title,a.q_content, b.name q_name, to_char(a.q_reg_date,'yyyy-MM-dd') as q_reg_date, a.hit, a.ispublic, a.a_content, a.a_reg_id, to_char(a.a_reg_date,'yyyy-MM-dd') as a_reg_date \r\n" + 
 					"from homepage_박건일_qanda a, homepage_박건일_member b\r\n" + 
 					"where a.q_reg_id = b.id\r\n" + 
 					"and a.no = '"+no+"'";
+			
 			try {
 				con = DBConnection.getConnection();
 				ps = con.prepareStatement(query);
 				rs = ps.executeQuery();
 				if(rs.next()) {
-					no = rs.getString(1);
-					String q_title = rs.getString(2);
-					String q_content = rs.getString(3);
-					String q_reg_id = rs.getString(4);
-					String q_reg_date = rs.getString(5);
-					String hit = rs.getString(6);
-					String ispublic = rs.getString(7);
-					String a_content = rs.getString(8);
-					String a_reg_id = rs.getString(9);
-					String a_reg_date = rs.getString(10);
+					no = rs.getString("no");
+					String q_title = rs.getString("q_title");
+					String q_content = rs.getString("q_content");
+					String q_reg_id = rs.getString("q_name");
+					String q_reg_date = rs.getString("q_reg_date");
+					String hit = rs.getString("hit");
+					String ispublic = rs.getString("ispublic");
+					String a_content = rs.getString("a_content");
+					String a_reg_id = rs.getString("a_reg_id");
+					String a_reg_date = rs.getString("a_reg_date");
 					//업데이트 dto순서: no,q_title,q_content,q_reg_id,q_reg_date,hit,ispublic,a_content, a_reg_id, a_reg_date;
 					dto = new Qanda_dto(no,q_title,q_content,q_reg_id,q_reg_date,hit,ispublic,a_content,a_reg_id,a_reg_date);
 				}	

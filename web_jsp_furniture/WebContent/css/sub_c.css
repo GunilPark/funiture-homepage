@@ -51,7 +51,7 @@
 	#b_right{
 		float:right;
 		width:704px;
-		height:500px;
+		//height:500px;
 		padding:20px;
 		margin-bottom:10px;
 //		background:green;	
@@ -239,6 +239,17 @@
 		height:250px;
 		border:0;
 	}	
+	.boardForm .textArea_H150_noBorder{
+		width:600px;
+		height:150px;
+		border:0;
+	}	
+	.boardForm .textArea_H100_noBorder{
+		width:600px;
+		height:100px;
+		border:0;
+	}	
+	
 	
 	.paging{
 		margin-top:20px;
@@ -337,7 +348,7 @@
 		clear:both;
 	}	
 	
-/*	È¸¿ø°¡ÀÔ */
+/*	È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	.checkB{
 		font-size:11px;
 		height:20px;
@@ -346,7 +357,7 @@
 	.middleCheck{
 		vertical-align:middle;	
 	}	
-/*	·Î±×ÀÎ */	
+/*	ï¿½Î±ï¿½ï¿½ï¿½ */	
 .member_boxL {
     position: relative;
     padding: 40px;

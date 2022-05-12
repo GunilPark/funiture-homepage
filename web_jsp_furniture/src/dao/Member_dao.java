@@ -39,6 +39,7 @@ public class Member_dao {
 		}
 	
 	// 멤버리스트
+	@SuppressWarnings("null")
 	public ArrayList<Member_dto> getList(String select, String search, int start, int end){
 		ArrayList<Member_dto> dtos = null;
 		String query = "select * from(\r\n" + 
@@ -55,12 +56,12 @@ public class Member_dao {
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				String id = rs.getString(1);
-				String name = rs.getString(2);
-				String area = rs.getString(3);
-				String reg_date = rs.getString(4);
-				String level_gubun = rs.getString(5);
-				String rNum = rs.getString(6);
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				String area = rs.getString("area");
+				String reg_date = rs.getString("reg_date");
+				String level_gubun = rs.getString("level_gubun");
+				String rNum = rs.getString("rNum");
 				//id, name, area, reg_date, level_gubun
 				Member_dto dto = new Member_dto(id, name, area, reg_date, level_gubun);
 				dtos.add(dto);
@@ -71,7 +72,7 @@ public class Member_dao {
 		}finally {
 			DBConnection.closeDB(con, ps, rs);
 		}
-		System.out.println(query);
+		System.out.print("adminlist:"+ query);
 		
 		return dtos;
 	}
