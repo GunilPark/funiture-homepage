@@ -6,7 +6,7 @@
 
 	Member_dao dao = new Member_dao();
 	Member_dto dto = null;
-
+	String id = request.getParameter("t_id");
 	if(sessionId.equals("")){
 %>
 		<script type="text/javascript">
@@ -14,9 +14,12 @@
 			location.href="member_login.jsp";
 		</script>	
 <%		
-	} else {
+	}else if(sessionLevel.equals("top")){
+		dto = dao.getMemberView(id);
+	}else {
 		dto = dao.getMemberView(sessionId);
-%>    
+	}
+%>   
 <html>
 <head>
 <link href="../css/sub_c.css" rel="stylesheet">
@@ -92,6 +95,19 @@
 					  <input type="checkbox" value="y" <%if(dto.getHobby_sports().equals("y"))out.print("checked");%> name="t_hobby_sports" class="middleCheck" /> 운동
 				  </td>
 				</tr>
+				
+				<%if(sessionLevel.equals("top")){ %>
+				<tr>
+				  <th>권한</th>
+				  <td>
+					<select name="t_level_gubun" >
+						<option value="top" <%if(dto.getLevel_gubun().equals("top")) out.print("selected");%>>서울</option>
+						<option value="manager" <%if(dto.getLevel_gubun().equals("manager")) out.print("selected");%>>대전</option>
+						<option value="member" <%if(dto.getLevel_gubun().equals("member")) out.print("selected");%>>부산</option>    
+					</select>	  
+				  </td>
+				</tr>
+				<% }else{ %>
 				<tr>
 				  <th>비밀번호확인</th>
 				  <td>
@@ -99,7 +115,7 @@
 				  	<input name="t_password_confirm"  maxlength="10" type="password" size="13">
 				  </td>
 				</tr>
-				
+				<% } %>
 			  </tbody>
 			</table>
 			</form>

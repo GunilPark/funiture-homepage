@@ -39,16 +39,15 @@ public class Member_dao {
 		}
 	
 	// 멤버리스트
-	@SuppressWarnings("null")
 	public ArrayList<Member_dto> getList(String select, String search, int start, int end){
-		ArrayList<Member_dto> dtos = null;
-		String query = "select * from(\r\n" + 
-				"select tbl.*, rownum as rnum\r\n" + 
-				"from\r\n" + 
-				"(select id, name, area, reg_date, level_gubun\r\n" + 
-				"from homepage_박건일_member \r\n" + 
-				"where "+select+" like '%"+search+"%'\r\n" + 
-				"order by level_gubun)tbl)\r\n" + 
+		ArrayList<Member_dto> dtos = new ArrayList<>();
+		String query = "select * from(\n" + 
+				"select tbl.*, rownum as rnum\n" + 
+				"from\n" + 
+				"(select id, name, area, TO_CHAR(reg_date,'yyyy-MM-dd') as reg_date, level_gubun\n" + 
+				"from homepage_박건일_member\n" + 
+				"where "+select+" like '%"+search+"%'\n" + 
+				"order by level_gubun desc)tbl)\n" + 
 				"where rnum >="+start+" and rnum <="+end;
 		
 		try {
@@ -61,7 +60,7 @@ public class Member_dao {
 				String area = rs.getString("area");
 				String reg_date = rs.getString("reg_date");
 				String level_gubun = rs.getString("level_gubun");
-				String rNum = rs.getString("rNum");
+
 				//id, name, area, reg_date, level_gubun
 				Member_dto dto = new Member_dto(id, name, area, reg_date, level_gubun);
 				dtos.add(dto);
@@ -72,7 +71,6 @@ public class Member_dao {
 		}finally {
 			DBConnection.closeDB(con, ps, rs);
 		}
-		System.out.print("adminlist:"+ query);
 		
 		return dtos;
 	}
@@ -114,7 +112,7 @@ public class Member_dao {
 				"    tell_1,tell_2,tell_3,\r\n" + 
 				"    gender,hobby_travel,hobby_reading,\r\n" + 
 				"    hobby_sports,\r\n" + 
-				"    to_char(reg_date,'yyyy-MM-dd') as reg_date\r\n" + 
+				"    to_char(reg_date,'yyyy-MM-dd') as reg_date, level_gubun\r\n" + 
 				"from homepage_박건일_member\r\n" + 
 				"where id ='"+id+"'";
 		try {
@@ -134,11 +132,12 @@ public class Member_dao {
 				String hobby_reading  = rs.getString("hobby_reading");
 				String hobby_sports   = rs.getString("hobby_sports");
 				String reg_date       = rs.getString("reg_date");
+				String level_gubun	  = rs.getString("level_gubun");
 				
 				dto = new Member_dto(id,name,password,area,address,
 									tell_1,tell_2,tell_3,gender,
 									hobby_travel,hobby_reading,hobby_sports,
-									reg_date,"","","");
+									reg_date,level_gubun,"","");
 			}
 		}catch(Exception e) {
 			System.out.println("getMemberView() 오류:"+query);

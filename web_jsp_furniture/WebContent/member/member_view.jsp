@@ -10,7 +10,8 @@
 
 	Member_dao dao = new Member_dao();
 	Member_dto dto = null;
-
+	String id = request.getParameter("t_id");
+	
 	if(sessionId.equals("")){
 %>
 		<script type="text/javascript">
@@ -18,7 +19,9 @@
 			location.href="member_login.jsp";
 		</script>	
 <%		
-	} else {
+	}else if(sessionLevel.equals("top")){
+		dto = dao.getMemberView(id);
+	}else {
 		dto = dao.getMemberView(sessionId);
 	}
 %>    	
@@ -94,6 +97,13 @@
 				  <td><%=dto.getReg_date()%>
 				  </td>
 				</tr>
+				<%if(sessionLevel.equals("top")){ %>
+				<tr>
+				  <th>권한</th>
+				  <td><%=dto.getLevel_gubun() %>
+				  </td>
+				</tr>
+				<% } %>
 			  </tbody>
 			</table>
 			</form>
@@ -111,10 +121,15 @@
 	</div>	
 </body>
 </html>
-
+<form name=update>
+<input name="t_id" value="<%=id%>">
+</form>
 <script type="text/javascript">
 	function goUpdateForm(){
-		location.href="member_update.jsp";
+		update.t_id.value = id;
+		update.method ="post";
+		update.action ="member_update.jsp";
+		update.submit();
 	}
 </script>
 <script type="text/javascript">

@@ -51,7 +51,6 @@ public class Qanda_dao {
 		}finally {
 			DBConnection.closeDB(con, ps, rs);
 		}
-		System.out.println("query:" + query);
 		return name;		
 	}
 	

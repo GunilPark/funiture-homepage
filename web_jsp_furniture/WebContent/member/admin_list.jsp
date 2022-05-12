@@ -36,7 +36,7 @@ ArrayList<Member_dto> dtos = dao.getList(select, search, start, end);
 int headNum = total_count-((current_page-1)*list_setup_count);
 
 %>
-<%@ include file="../common_head.jsp" %> 
+<%@ include file="/common_head.jsp" %> 
 	
 		<div id="b_left">
 			<P>NOTICE & NEWS</P>
@@ -67,11 +67,11 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 			<table class="boardList">
 				<colgroup>
 					<col width="5%">
-					<col width="60%">
-					<col width="5%">
-					<col width="10%">
-					<col width="14%">
-					<col width="6%">
+					<col width="20%">
+					<col width="15%">
+					<col width="15%">
+					<col width="20%">
+					<col width="25%">
 				</colgroup>
 				<thead>
 					<tr>
@@ -86,9 +86,9 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 				<tbody>
 				<%for(int k = 0; k < dtos.size(); k++){ %>
 					<tr>
-						<td><a href=""><%=headNum-k %></a></td>
+						<td><a href="javascript:goView('<%=dtos.get(k).getId()%>')"><%=headNum-k %></a></td>
 						<td class="t_center">
-						<a href=""><%=dtos.get(k).getId()%></a></td>
+						<a href="javascript:goView('<%=dtos.get(k).getId()%>')"><%=dtos.get(k).getId()%></a></td>
 						<td><%=dtos.get(k).getName() %></td>
 						<td><%=dtos.get(k).getArea() %></td>
 						<td><%=dtos.get(k).getLevel_gubun() %></td>
@@ -125,7 +125,7 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 </html>
 
 <form name="view">
-<input name="t_no" type="hidden">
+<input name="t_id" type="hidden">
 </form>
 
 <form name="pageForm">
@@ -143,9 +143,9 @@ function goPage(pageNumber){
     pageForm.submit();      
  }
  
-function goView(no){
-	view.t_no.value = no;
-	view.action = "admin_view.jsp?t_no="+no;
+function goView(id){
+	view.t_id.value = id;
+	view.action = "member_view.jsp?t_id="+id;
 	view.submit();
 }
 
