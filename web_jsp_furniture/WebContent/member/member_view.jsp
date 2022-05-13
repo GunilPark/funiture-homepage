@@ -11,7 +11,10 @@
 	Member_dao dao = new Member_dao();
 	Member_dto dto = null;
 	String id = request.getParameter("t_id");
-	
+	if(id == null){
+		id = "admin";
+	}
+	String key = "";
 	if(sessionId.equals("")){
 %>
 		<script type="text/javascript">
@@ -21,8 +24,10 @@
 <%		
 	}else if(sessionLevel.equals("top")){
 		dto = dao.getMemberView(id);
+		key = id;
 	}else {
 		dto = dao.getMemberView(sessionId);
+		key = sessionId;
 	}
 %>    	
 	
@@ -108,7 +113,7 @@
 			</table>
 			</form>
 <div class="buttonGroup_center">
-	<a href="javascript:goUpdateForm()" class="butt">정보 수정</a>
+	<a href="javascript:goUpdateForm('<%=key%>')" class="butt">정보 수정</a>
 <!--  	
 	<a href="member_login.jsp" class="butt">로그인</a>
 	<input type="button" onclick="goJoin()" value="회원가입">
@@ -121,12 +126,16 @@
 	</div>	
 </body>
 </html>
-<form name=update>
-<input name="t_id" value="<%=id%>">
+<form name="update">
+<%if(sessionLevel.equals("top")){ %>
+<input name="t_id" type="hidden" value="<%=id%>">
+<%}else{ %>
+<input name="t_id" type="hidden" value="<%=sessionId%>">
+<%} %>
 </form>
 <script type="text/javascript">
-	function goUpdateForm(){
-		update.t_id.value = id;
+	function goUpdateForm(key){
+		update.t_id.value = key;
 		update.method ="post";
 		update.action ="member_update.jsp";
 		update.submit();

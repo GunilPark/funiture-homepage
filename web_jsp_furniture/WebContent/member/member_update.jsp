@@ -101,16 +101,18 @@
 				  <th>권한</th>
 				  <td>
 					<select name="t_level_gubun" >
-						<option value="top" <%if(dto.getLevel_gubun().equals("top")) out.print("selected");%>>서울</option>
-						<option value="manager" <%if(dto.getLevel_gubun().equals("manager")) out.print("selected");%>>대전</option>
-						<option value="member" <%if(dto.getLevel_gubun().equals("member")) out.print("selected");%>>부산</option>    
-					</select>	  
+						<option value="top" <%if(dto.getLevel_gubun().equals("top")) out.print("selected");%>>top</option>
+						<option value="manager" <%if(dto.getLevel_gubun().equals("manager")) out.print("selected");%>>manager</option>
+						<option value="member" <%if(dto.getLevel_gubun().equals("member")) out.print("selected");%>>member</option>    
+					</select>	
+					<input type="hidden" name="t_password" value="<%=dto.getPassword()%>">  
 				  </td>
 				</tr>
 				<% }else{ %>
 				<tr>
 				  <th>비밀번호확인</th>
 				  <td>
+				 	<input name="t_level_gubun" type="hidden" value="<%=sessionLevel%>">
 				  	<input type="hidden" name="t_password" value="<%=dto.getPassword()%>">
 				  	<input name="t_password_confirm"  maxlength="10" type="password" size="13">
 				  </td>
@@ -120,7 +122,12 @@
 			</table>
 			</form>
 <div class="buttonGroup_center">
+
+<%if(sessionLevel.equals("top")){ %>
+	<a href="javascript:goUpdate2()" class="butt">수정 저장</a>
+<%}else{ %>
 	<a href="javascript:goUpdate()" class="butt">수정 저장</a>
+<%} %>
 <!--  	
 	<a href="member_login.jsp" class="butt">로그인</a>
 	<input type="button" onclick="goJoin()" value="회원가입">
@@ -133,7 +140,7 @@
 		</div>
 </body>
 </html>
-<% } %>
+
 
 <script type="text/javascript">
 
@@ -151,6 +158,18 @@
 			join.t_password_confirm.select();
 			return;
 		}
+		
+		join.method="post";
+		join.action="db_member_update.jsp";
+		join.submit();
+	}
+	function goUpdate2(){
+		if(checkValue(join.t_name,"성명 입력!")) return;
+
+		if(checkValue(join.t_address,"주소 입력!")) return;
+		if(checkValue(join.t_tell_1,"첫번째 연락처 입력!")) return;		
+		if(checkValue(join.t_tell_2,"두번째 연락처 입력!")) return;		
+		if(checkValue(join.t_tell_3,"세번째 연락처 입력!")) return;		
 		
 		join.method="post";
 		join.action="db_member_update.jsp";

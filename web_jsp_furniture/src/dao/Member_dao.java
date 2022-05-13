@@ -89,7 +89,8 @@ public class Member_dao {
 				"    gender ='"+dto.getGender()+"',	\r\n" + 
 				"    hobby_travel ='"+dto.getHobby_travel()+"',	\r\n" + 
 				"    hobby_reading ='"+dto.getHobby_reading()+"',	\r\n" + 
-				"    hobby_sports='"+dto.getHobby_sports()+"'	\r\n" + 
+				"    hobby_sports='"+dto.getHobby_sports()+"',	\r\n" + 
+				"    level_gubun='"+dto.getLevel_gubun()+"'	\r\n" + 
 				" where id ='"+dto.getId()+"'";
 		try {
 			con = DBConnection.getConnection();

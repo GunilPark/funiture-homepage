@@ -87,7 +87,7 @@
 					<li><a href="" class="allclick"><i class="fas fa-bars"></i></a></li>
 					
 					<%  if(sessionLevel.equals("top")){ %>
-						<li><a href="admin_list.jsp">Admin</a></li>
+						<li><a href="member/admin_list.jsp">Admin</a></li>
 					<%	} %>
 					
 					<%  if(sessionId.equals("")){ %>

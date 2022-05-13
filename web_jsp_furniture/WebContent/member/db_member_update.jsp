@@ -26,6 +26,7 @@
 	String  hobby_travel  = request.getParameter("t_hobby_travel");
 	String  hobby_reading = request.getParameter("t_hobby_reading");
 	String  hobby_sports  = request.getParameter("t_hobby_sports");
+	String  level_gubun	  = request.getParameter("t_level_gubun");
 
 	if(hobby_travel == null) hobby_travel ="n";
 	if(hobby_reading == null) hobby_reading ="n";
@@ -34,7 +35,7 @@
 	Member_dto dto = 
 		new Member_dto(id,name,password,area,address,tell_1,tell_2,tell_3,
 				gender,hobby_travel,hobby_reading,hobby_sports,
-				"","","","");	
+				"",level_gubun,"","");	
 	
 	int result = dao.memberUpdate(dto);
 	String msg ="정보수정 실패하였습니다. 관리자에게 문의바랍니다.";
