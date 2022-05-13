@@ -1,21 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/common_head.jsp" %>
-	
+<%@page import="dto.*,dao.*,common.*,java.util.*" %>
+<%
+request.setCharacterEncoding("utf-8");
+Free_dao dao = new Free_dao();
+ArrayList<Free_dto> dtos = dao.getList();
+
+
+%>
 		<div id="b_left">
-			<P>NOTICE & NEWS</P>
+			<P>FREE BOARD</P>
 			<ul>
-				<li><a href="notice_list.html"><span class="fnt"><i class="fas fa-apple-alt"></i></span> NOTICE</a></li>
-				<li><a href="">NEWS</a></li>
-				<li><a href="">Q & A</a></li>
-				<li><a href="">FREE BOARD</a></li>
-				<li><a href="">ETC</a></li>
+				<li><a href="/notice/notice_list.jsp"> NOTICE</a></li>
+				<li><a href="/news/news_list.jsp">NEWS</a></li>
+				<li><a href="/qanda/qanda_list.jsp">Q & A</a></li>
+				<li><a href="/freeboard/freeboard_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>FREE BOARD</a></li>
+				<li><a href="/etc/etc_list.jsp">ETC</a></li>
 			</ul>
 		</div>
 		
 		<div id="b_right">
 			<p class="n_title">
-				NOTICE
+				FREE BOARD
 			</p>
 			<p class="select_box">
 				<select class="sel_box">
@@ -30,8 +37,7 @@
 			<table class="boardList">
 				<colgroup>
 					<col width="5%">
-					<col width="60%">
-					<col width="5%">
+					<col width="65%">
 					<col width="10%">
 					<col width="14%">
 					<col width="6%">
@@ -40,93 +46,21 @@
 					<tr>
 						<th>No</th>
 						<th>Title</th>
-						<th>Attach</th>
 						<th>Reg Name</th>
 						<th>Reg Date</th>
 						<th>Hit</th>
 					</tr>
 				</thead>
 				<tbody>
+					<% for(int k =0; k<dtos.size(); k++){%>
 					<tr>
-						<td>9</td>
-						<td class="t_center"><a href="notice_view.html">구매 절차 과정 안내 드립니다.</a></td>
-						<td><img src="../images/clip.png"></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>8</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>7</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td><img src="../images/clip.png"></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>6</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td><img src="../images/clip.png"></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>5</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>4</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>3</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>2</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>1</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
-					<tr>
-						<td>0</td>
-						<td class="t_center">구매 절차 과정 안내 드립니다.</td>
-						<td></td>
-						<td>관리자</td>
-						<td>2020-07-28</td>
-						<td>412</td>
-					</tr>	
+						<th><%=dtos.get(k).getNo() %></th>
+						<th><%=dtos.get(k).getTitle() %></th>
+						<th><%=dtos.get(k).getReg_name() %></th>
+						<th><%=dtos.get(k).getReg_date() %></th>
+						<th><%=dtos.get(k).getHit() %></th>
+					</tr>
+				<%} %>	
 				</tbody>
 			</table>
 			
@@ -140,26 +74,16 @@
 				<a href="">5</a>
 				<a href=""><i class="fa fa-angle-right"></i></a>
 				<a href=""><i class="fa fa-angle-double-right"></i></a>
-				<a href="notice_write.html" class="write">글쓰기</a>
+				
+<%
+if(!sessionLevel.equals("")){
+%>
+				<a href="freeboard_write.jsp" class="write">글쓰기</a>
+<%} %>
 			</div>
 		</div>	
 	
-		<div id="b_bottom">
-			<div class="b_bottom_left">
-				<img src="../images/footer_logo_4.jpg">
-			</div>
-			<div class="b_bottom_center">
-				<p>개인정보처리방침  | 개인정보보호정책 | 이용약관 | 협회소개</p>
-				우편번호 (26349) 강원 원주시 호저면 우무개로 365 2층, 2호 | 사업자번호 : 209-82-64664<br>
-				TEL: 033-747-4012 | FAX: 033-747-4014 | E-mail: korbamtb@daum.net<br>
-				COPYRIGHT 2012 KOREA OFF ROAD BIKE ASSOCIATION. ALL RIGHT RESERVED		
-			</div>
-			<div class="b_bottom_right">
-				서울사무소: (02) 4545- 8545<br>
-				대전사무소: (042) 5417- 8842<br>
-				광주사무소: (052) 4545- 2214<br>
-				부산사무소: (048) 4545- 7546
-			</div>		
+	<%@ include file="../common_footer.jsp" %>
 		</div>	
 	</div>	
 </body>
