@@ -16,25 +16,24 @@
 	}
 
    /* paging 설정 start*/
-   String nowPage = request.getParameter("t_nowPage");
-   int current_page = 0; // 현재페이지 번호
-   int total_page = 0;    // 전체 페이지 수
-   int total_count = dao.getTotalCount(select, search); // 전체 행수 21
-   int list_setup_count = 3;  //한페이지당 출력 행수 
-   
-   if(nowPage == null || nowPage.equals("")) current_page = 1; 
-   else current_page = Integer.parseInt(nowPage);
-   
-   total_page = total_count / list_setup_count;  // 몫 : 2
-   int rest =    total_count % list_setup_count;   // 나머지:1
-   if(rest !=0) total_page = total_page + 1;     // 3
-   
-   int start = (current_page -1) * list_setup_count + 1;
-   int end   = current_page * list_setup_count;
-   /* paging 설정 end*/
+	String nowPage = request.getParameter("t_nowPage");
+	int current_page = 0; // 현재페이지 번호
+	int total_page = 0;    // 전체 페이지 수
+	int total_count = dao.getTotalCount(select, search); // 전체 행수 21
+	int list_setup_count = 3;  //한페이지당 출력 행수 
+	
+	if(nowPage == null || nowPage.equals("")) current_page = 1; 
+	else current_page = Integer.parseInt(nowPage);
+	
+	total_page = total_count / list_setup_count;  // 몫 : 2
+	int rest =    total_count % list_setup_count;   // 나머지:1
+	if(rest !=0) total_page = total_page + 1;     // 3
+	
+	int start = (current_page -1) * list_setup_count + 1;
+	int end   = current_page * list_setup_count;
+	/* paging 설정 end*/
 	int headNum = total_count-((current_page-1)*list_setup_count);
 	ArrayList<Free_dto> dtos = dao.getList(select, search, start, end);
-	
 
 %>
 		<div id="b_left">
