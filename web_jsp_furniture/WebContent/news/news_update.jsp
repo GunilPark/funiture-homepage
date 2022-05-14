@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@page import="dto.*,dao.*,java.util.*,common.*" %>
 <%@ include file="../common_head.jsp" %> 
-<%@ include file="/access_top.jsp" %>
 <%
 request.setCharacterEncoding("utf-8");
 News_dao dao = new News_dao();

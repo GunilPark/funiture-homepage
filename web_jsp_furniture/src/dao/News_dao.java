@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import common.DBConnection;
 import dto.News_dto;
 
+
 public class News_dao {
 	Connection con = null;
 	PreparedStatement ps = null;
@@ -133,6 +134,26 @@ public class News_dao {
 		}
 		return dto;		
 	}
+	// 등록
+	public int newsSave(News_dto dto){
+		int result =0;
+		String query="insert into homepage_박건일_news\r\n" + 
+				" (no,title,content,attach,reg_id,reg_date)\r\n" + 
+				" values\r\n" + 
+				" ('"+dto.getNo()+"','"+dto.getTitle()+"','"+dto.getContent()+"','"+dto.getAttach()+"','"+dto.getReg_id()+"','"+dto.getReg_date()+"')" ; 
+		try {
+			con = DBConnection.getConnection();
+			ps  = con.prepareStatement(query);
+			result  = ps.executeUpdate();
+		}catch(Exception e) {
+			System.out.println("noticeSave() 오류:"+query);
+			e.printStackTrace();
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}		
+		return result;
+	}
+	
 	//업데이트
 	public int newsUpdate(News_dto dto) {
 		int result = 0;
@@ -180,7 +201,6 @@ public class News_dao {
 				//dto의 순서: no,title,content,attach,hit,reg_id,reg_date
 				News_dto dto = new News_dto(no, title, "", attach, hit, reg_id, reg_date);
 				dtos.add(dto);
-				System.out.println("query는:" + query);
 			}
 		}catch(SQLException e) {
 			System.out.println("getList() 오류:" + query);

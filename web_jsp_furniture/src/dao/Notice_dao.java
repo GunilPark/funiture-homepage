@@ -31,7 +31,6 @@ public class Notice_dao{
 			DBConnection.closeDB(con, ps, rs);
 		}
 		
-		
 	}
 	
 	

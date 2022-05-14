@@ -56,8 +56,8 @@
 			<form name="noti" method="post" action="notice_list.jsp">
 			<p class="select_box">
 				<select class="sel_box" name="t_select">
-					<option value="a.title">Title</option>
-					<option value="a.content">Content</option>
+					<option value="a.title" <%if(select.equals("a.title"))out.print("selected"); %>>Title</option>
+					<option value="a.content"<%if(select.equals("a.content"))out.print("selected"); %>>Content</option>
 				</select>
 				<input type="text" name="t_search" class="sel_text">
 				<button type="submit" class="sel_button"><i class="fa fa-search"></i> SEARCH</button>
