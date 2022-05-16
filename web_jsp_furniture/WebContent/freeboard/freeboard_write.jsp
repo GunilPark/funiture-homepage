@@ -46,9 +46,9 @@ if(sessionLevel.equals("")){
 					</tr>	
 					<tr>
 						<th>Writer</th>
-						<td><input type="text" name="t_name" readonly value="<%=sessionName%>" class="input100"></td>
+						<td><input type="text" readonly name="t_name" readonly value="<%=sessionName%>" class="input100"></td>
 						<th>RegDate</th>
-						<td><input type="date" name="t_reg_date" readonly value="<%=CommonUtil.getToday()%>" class="input130"></td>
+						<td><input type="date" readonly name="t_reg_date" readonly value="<%=CommonUtil.getToday()%>" class="input130"></td>
 					</tr>	
 
 				</tbody>

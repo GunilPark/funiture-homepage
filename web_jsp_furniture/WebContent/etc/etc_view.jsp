@@ -1,7 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="dao.*,dto.*"  %>
 <!DOCTYPE html>
 <%@ include file="/common_head.jsp" %>
+<%
+request.setCharacterEncoding("utf-8");
+Etc_dao dao = new Etc_dao();
+String no = request.getParameter("t_no");
+int up = dao.hitUp(no);
+Etc_dto dto = dao.etcView(no);
+
+%>
 		<div id="b_left">
 			<P>NOTICE & NEWS</P>
 			<ul>
@@ -21,31 +30,26 @@
 			<table class="boardForm">
 				<colgroup>
 					<col width="15%">
-					<col width="55%">
-					<col width="10%">
+					<col width="65%">
 					<col width="20%">
 				</colgroup>
 				<tbody>
 					<tr>
 						<th>Title</th>
-						<td colspan="2">구매 절차 과정 안내 드립니다.</td>
-						<td> <i class="far fa-eye"></i> 152</td>
+						<td colspan="2"><%=dto.getTitle() %></td>
+						<td> <i class="far fa-eye"></i><%=dto.getHit() %></td>
 					</tr>	
 					<tr>
 						<th>Content</th>
 						<td colspan="3">
-							<textarea class="textArea_H250_noBorder" readonly>구매 절차 과정 안내 드립니다.구매 절차 과정 안내 드립니다.구매 절차 과정 안내 드립니다.</textarea>
+							<textarea class="textArea_H250_noBorder" readonly><%=dto.getContent() %></textarea>
 						</td>
 					</tr>	
 					<tr>
-						<th>Attach</th>
-						<td colspan="3">구매안내.hwp</td>
-					</tr>	
-					<tr>
 						<th>Writer</th>
-						<td>관리자</td>
+						<td><%=dto.getReg_name() %></td>
 						<th>RegDate</th>
-						<td>2020-09-01</td>
+						<td><%=dto.getReg_date() %></td>
 					</tr>	
 
 				</tbody>

@@ -14,12 +14,62 @@ public class Etc_dao {
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	
+	//조회수 증가
+	public int hitUp(String no) {
+		int result = 0;
+		String query = "update homepage_박건일_etc\n" + 
+				"set hit = hit+1\n" + 
+				"where no = '"+no+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			result = ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("hitUp() 오류: " + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		return result;
+	}
+	
+	//뷰 생성
+	public Etc_dto etcView(String no) {
+		Etc_dto dto = null;
+		String query = "select title,content,reg_id,reg_name,reg_date,hit\n" + 
+				"from homepage_박건일_etc\n" + 
+				"where no = '"+no+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				String reg_id = rs.getString("reg_id");
+				String reg_name = rs.getString("reg_name");
+				String reg_date = rs.getString("reg_date");
+				String hit = rs.getString("hit");
+				dto = new Etc_dto(no,title,content,reg_id,reg_name,reg_date,hit);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("etcView() 오류: " + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		return dto;
+	}
+	
+	
+	
 	//리스트 생성
 	public ArrayList<Etc_dto> etcList(String select, String search){
 		ArrayList<Etc_dto> dtos = new ArrayList<>();
 		String query = "select no,title,content,reg_id,reg_name,reg_date,hit\r\n" + 
 				"from homepage_박건일_etc\r\n" + 
-				"where "+select+" like '%"+search+"%'";
+				"where "+select+" like '%"+search+"%'\r\n"+
+				"order by no desc";
 		try {
 			con = DBConnection.getConnection();
 			ps = con.prepareStatement(query);

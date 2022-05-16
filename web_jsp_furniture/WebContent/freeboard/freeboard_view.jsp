@@ -49,7 +49,7 @@ if(dto == null){
 					<tr>
 						<th>Content</th>
 						<td colspan="3">
-							<textarea name="t_content" class="textArea_H250_noBorder" readonly><%=dto.getContent() %></textarea>
+							<textarea name="t_content" readonly class="textArea_H250_noBorder" readonly><%=dto.getContent() %></textarea>
 						</td>
 					</tr>	
 				

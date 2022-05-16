@@ -63,7 +63,7 @@ ArrayList<Etc_dto> dtos = dao.etcList(select, search);
 				<%for(int k = 0; k < dtos.size(); k++){ %>
 					<tr>
 						<td><%=dtos.get(k).getNo() %></td>
-						<td class="t_center"><a href="etc_view.jsp"><%=dtos.get(k).getTitle() %></a></td>
+						<td class="t_center"><a href="javascript:goView('<%=dtos.get(k).getNo()%>')"><%=dtos.get(k).getTitle() %></a></td>
 						<td><%=dtos.get(k).getReg_name() %></td>
 						<td><%=dtos.get(k).getReg_date() %></td>
 						<td><%=dtos.get(k).getHit() %></td>
@@ -93,6 +93,19 @@ ArrayList<Etc_dto> dtos = dao.etcList(select, search);
 	</div>	
 </body>
 </html>
+<form name="view">
+<input type="hidden" name="t_no">
+</form>
+<script>
+function goView(no){
+	view.t_no.value=no;
+	view.method="post";
+	view.action="etc_view.jsp";
+	view.submit();
+	
+}
+
+</script>
 
 
 
