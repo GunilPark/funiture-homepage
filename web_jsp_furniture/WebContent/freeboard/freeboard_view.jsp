@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="dto.*, dao.*, common.*,java.util.*"  %>    
+<%@ page import="dto.*, dao.*, common.*,java.util.*,"  %>    
 <%
 request.setCharacterEncoding("utf-8");
 Free_dao dao = new Free_dao();
 
 String no = request.getParameter("t_no");
 dao.setHitCount(no);
+
+ArrayList<Comment_dto> dtos = dao.getComments(no);
 
 Free_dto dto = dao.getView(no);
 if(dto == null){
@@ -37,8 +39,9 @@ if(dto == null){
 			<table class="boardForm">
 				<colgroup>
 					<col width="20%">
-					<col width="55%">
+					<col width="45%">
 					<col width="25%">
+					<col width="10%">
 				</colgroup>
 				<tbody>
 					<tr>
@@ -58,7 +61,28 @@ if(dto == null){
 						<td><%=dto.getReg_name()%></td>
 						<th>RegDate</th>
 						<td><%=dto.getReg_date()%></td>
+					</tr>
+					
+					<tr>
+						<th>댓글</th>
+						<td colspan="2">
+							<form name="comment">
+							<input type="hidden" name="t_no" value="<%=dto.getNo()%>">
+							<input name="t_comment" type="text" class="input500">
+							</form>	
+						</td>
+						<td>
+						<a href="javascript:goComment()" class="butt">댓글입력</a>
+						</td>
+					</tr>
+					<%for(int k = 0; k<dtos.size(); k++){ %>	
+					<tr>
+						<th>댓글</th>
+						<td colspan="3">
+							<input type="text" class="input600" value="<%=dtos.get(k).getContent()%>">
+						</td>
 					</tr>	
+					<%} %>
 
 				</tbody>
 			</table>
@@ -91,6 +115,20 @@ function goDelete(){
 		free.action="db_freeboard_delete.jsp";
 		free.submit();
 	}	
+
+}
+	
+	
+function goComment(){
+	
+	if(comment.t_comment.value == ""){
+		alert("댓글을 입력해주세요!")
+		return;
+	}
+	comment.method="post";
+	comment.action="db_freeboard_comment_save.jsp";
+	comment.submit();
+
 }
 
 

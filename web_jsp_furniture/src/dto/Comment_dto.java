@@ -2,11 +2,11 @@ package dto;
 
 public class Comment_dto {
 
-	private String no,reg_order,content,reg_id,reg_date;
+	private String no,no_order,content,reg_id,reg_date;
 
-	public Comment_dto(String no, String reg_order, String content, String reg_id, String reg_date) {
+	public Comment_dto(String no, String no_order, String content, String reg_id, String reg_date) {
 		this.no = no;
-		this.reg_order = reg_order;
+		this.no_order = no_order;
 		this.content = content;
 		this.reg_id = reg_id;
 		this.reg_date = reg_date;
@@ -16,8 +16,8 @@ public class Comment_dto {
 		return no;
 	}
 
-	public String getReg_order() {
-		return reg_order;
+	public String getNo_order() {
+		return no_order;
 	}
 
 	public String getContent() {

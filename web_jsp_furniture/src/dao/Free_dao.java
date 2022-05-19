@@ -7,12 +7,88 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import common.DBConnection;
+import dto.Comment_dto;
 import dto.Free_dto;
 
 public class Free_dao {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
+	
+	//댓글 리스트 생성
+	public ArrayList<Comment_dto> getComments(String no){
+		ArrayList<Comment_dto> dtos = new ArrayList<>();
+		String query="select no_order,content,reg_id,reg_date\r\n" + 
+				"from homepage_박건일_comment\r\n" + 
+				"where no = '"+no+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String no_order = rs.getString("no_order");
+				String content = rs.getString("comment");
+				String reg_id = rs.getString("reg_id");
+				String reg_date = rs.getString("reg_date");
+				//순서:  no,no_order,content,reg_id,reg_date
+				Comment_dto dto = new Comment_dto(no,no_order,content,reg_id,reg_date);
+				dtos.add(dto);
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			System.out.println("getComments() 오류:" + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		
+		return dtos;
+	}
+	
+	
+	//comment생성
+	public int commentSave(Comment_dto dto) {
+		int result = 0;
+		String query = "insert into homepage_박건일_comment\r\n" + 
+				"(no,no_order,content,reg_id,reg_date)\r\n" + 
+				"values\r\n" + 
+				"('"+dto.getNo()+"','"+dto.getNo_order()+"','"+dto.getContent()+"','"+dto.getReg_id()+"','"+dto.getReg_date()+"')";
+		try{
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			result = ps.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("commentSave() 오류: " + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		
+		return result;
+	}
+	
+	// 번호 조회
+	public String getMaxNo2(String no, String id) {
+		String newNo="";
+		String query ="select nvl(max(no),'C000')\r\n" + 
+				"from homepage_박건일_comment\r\n" + 
+				"where no = '"+no+"'\r\n" + 
+				"and reg_id = '"+id+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps  = con.prepareStatement(query);
+			rs  = ps.executeQuery();
+			if(rs.next()) {
+				newNo = rs.getString(1);
+			}
+		}catch(Exception e) {
+			System.out.println("getMaxNo() 오류:"+query);
+			e.printStackTrace();
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		return newNo;
+	}
 	
 	// 번호 조회
 	public String getMaxNo() {
