@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="dto.*, dao.*, common.*,java.util.*,"  %>    
+<%@ page import="dto.*, dao.*, common.*,java.util.*"  %>    
 <%
 request.setCharacterEncoding("utf-8");
 Free_dao dao = new Free_dao();
@@ -77,10 +77,24 @@ if(dto == null){
 					</tr>
 					<%for(int k = 0; k<dtos.size(); k++){ %>	
 					<tr>
-						<th>댓글</th>
-						<td colspan="3">
-							<input type="text" class="input600" value="<%=dtos.get(k).getContent()%>">
+						<th>[<%=dao.getName(dtos.get(k).getReg_id()) %>]</th>
+						
+						<td id="fix" colspan="1">
+							<h4><%=dtos.get(k).getContent()%></h4>
+							<form name="save">
+							<input name="t_no" type="hidden" value="<%=dtos.get(k).getNo()%>">
+							<input name="t_no_order" type="hidden" value="<%=dtos.get(k).getNo_order()%>">
+							<input name="t_content" id="fixx" type="text" class="input500" value="<%=dtos.get(k).getContent()%>">
+							</form>
 						</td>
+						<th>[<%=dtos.get(k).getReg_date()%>]</th>
+						<%if(sessionId.equals(dtos.get(k).getReg_id())){ %>
+						<td id="all">
+						<a href="javascript:commentDelete('<%=dtos.get(k).getNo_order()%>')">[삭제]</a>  
+						<a href="javascript:commentUpdate('<%=dtos.get(k).getNo_order()%>','<%=k%>')">[수정]</a>
+						<a id="a_<%=k%>" href="javascript:commentSave()">[저장]</a>
+						</td>
+						<%} %>
 					</tr>	
 					<%} %>
 
@@ -102,11 +116,20 @@ if(dto == null){
 <form name="free">
 <input name="t_no" value="<%=no%>">
 </form>
+<form name="sex">
+<input type="hidden" name="t_no" value="<%=no%>">
+<input type="hidden" name="t_no_order" value="">
+
+</form>
 
 </html>
 
 
 <script type="text/javascript">
+
+$("#fixx").hide();
+$("#a_2").hide();
+
 
 function goDelete(){
 	var goYesNo = confirm("정말삭제하시겠습니까?");
@@ -129,6 +152,26 @@ function goComment(){
 	comment.action="db_freeboard_comment_save.jsp";
 	comment.submit();
 
+}
+
+function commentDelete(no_order){
+	sex.t_no_order.value = no_order;
+	sex.method="post";
+	sex.action="db_freeboard_comment_delete.jsp";
+	sex.submit();
+}
+
+function commentUpdate(no_order,k){
+	$("#fix h4").css("display","none");
+	$("#fixx").show();
+	$("#all a").hide();
+	$("#a_"+k).show();
+}
+
+function commentSave(){
+	save.method="post";
+	save.action="db_freeboard_comment_update.jsp";
+	save.submit();
 }
 
 

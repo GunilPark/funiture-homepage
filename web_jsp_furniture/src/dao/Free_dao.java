@@ -14,11 +14,75 @@ public class Free_dao {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
+	//아이디로 이름 불러오기
+	public String getName(String id) {
+		String name = "";
+		String query = "select name\r\n" + 
+				"from \"HOMEPAGE_박건일_MEMBER\"\r\n" + 
+				"where id = '"+id+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				name = rs.getString("name");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			System.out.println("getComments() 오류:" + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		return name;
+	}
+	
+	
+	//댓글 업데이트
+	public int updateComment(String no,String no_order,String content) {
+		int result = 0;
+		String query = "update HOMEPAGE_박건일_COMMENT\r\n" + 
+				"set content = '"+content+"'\r\n" + 
+				"where no = '"+no+"'\r\n" + 
+				"and no_order = '"+no_order+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			result = ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("updateComment() 오류: " + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		
+		return result;
+	}
+	
+	//댓글 삭제
+	public int deleteComment(String no, String order) {
+		int result = 0;
+		String query = "delete from HOMEPAGE_박건일_COMMENT\r\n" + 
+				"where no = '"+no+"'\r\n" + 
+				"and no_order = '"+order+"'";
+		try {
+			con = DBConnection.getConnection();
+			ps = con.prepareStatement(query);
+			result = ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("deleteComment() 오류: " + query);
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}
+		
+		return result;
+	}
+	
 	
 	//댓글 리스트 생성
 	public ArrayList<Comment_dto> getComments(String no){
 		ArrayList<Comment_dto> dtos = new ArrayList<>();
-		String query="select no_order,content,reg_id,reg_date\r\n" + 
+		String query="select no_order,content,reg_id,to_Char(reg_date,'yyyy-MM-dd') as reg_date\r\n" + 
 				"from homepage_박건일_comment\r\n" + 
 				"where no = '"+no+"'";
 		try {
@@ -27,7 +91,7 @@ public class Free_dao {
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				String no_order = rs.getString("no_order");
-				String content = rs.getString("comment");
+				String content = rs.getString("content");
 				String reg_id = rs.getString("reg_id");
 				String reg_date = rs.getString("reg_date");
 				//순서:  no,no_order,content,reg_id,reg_date
@@ -70,7 +134,7 @@ public class Free_dao {
 	// 번호 조회
 	public String getMaxNo2(String no, String id) {
 		String newNo="";
-		String query ="select nvl(max(no),'C000')\r\n" + 
+		String query ="select nvl(max(no_order),'C000')\r\n" + 
 				"from homepage_박건일_comment\r\n" + 
 				"where no = '"+no+"'\r\n" + 
 				"and reg_id = '"+id+"'";
