@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ page import="dto.*,dao.*,java.util.*" %>
 <%@ include file="../common_head.jsp" %>
+<%
+	request.setCharacterEncoding("utf-8");
+	Member_dao dao = new Member_dao();
+	ArrayList<Member_dto> dtos = dao.getIdList();
+
+%>
 	
 		<div id="b_left">
 			<P>MEMBER</P>
@@ -101,6 +107,16 @@
 </html>
 
 <script type="text/javascript">
+	function checkId(){
+		var id = $("#id").val();
+		<%for(int k = 0; k < dtos.size() ;k++){
+			dtos.get(k).getId(); %>
+			
+			
+		<%}%>
+		
+	}
+
 	function checkValue(obj,msg){
 		if(obj.value==""){
 			alert(msg);

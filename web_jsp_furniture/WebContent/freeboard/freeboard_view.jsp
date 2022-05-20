@@ -84,7 +84,7 @@ if(dto == null){
 							<form name="save">
 							<input name="t_no" type="hidden" value="<%=dtos.get(k).getNo()%>">
 							<input name="t_no_order" type="hidden" value="<%=dtos.get(k).getNo_order()%>">
-							<input name="t_content" id="fixx" type="text" class="input500" value="<%=dtos.get(k).getContent()%>">
+							<input name="t_content" class="fixx" type="text" class="input500" value="<%=dtos.get(k).getContent()%>">
 							</form>
 						</td>
 						<th>[<%=dtos.get(k).getReg_date()%>]</th>
@@ -98,12 +98,6 @@ if(dto == null){
 					</tr>	
 					<%} %>
 
-					<tr>
-						<th>댓글</th>
-						<td colspan="3">
-							<textarea name="t_content" readonly class="textArea_H250_noBorder" readonly><%=dto.getContent() %></textarea>
-						</td>
-					</tr>
 				</tbody>
 			</table>
 			<div class="buttonGroup">
@@ -133,7 +127,7 @@ if(dto == null){
 
 <script type="text/javascript">
 
-$("#fixx").hide();
+$(".fixx").hide();
 $("#a_2").hide();
 
 

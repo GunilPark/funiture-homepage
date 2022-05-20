@@ -1,7 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="dto.*, dao.*, common.*,java.util.*" %>
+<%@ include file="/common_head.jsp" %> 
 <%
+if(!sessionLevel.equals("top")){
+%>
+<script>
+alert("관리자 메뉴 입니다.");
+location.href="/index.jsp";
+</script>
+<%} 
 request.setCharacterEncoding("utf-8");
 Member_dao dao = new Member_dao();
 String select = request.getParameter("t_select");
@@ -34,25 +42,24 @@ int end   = current_page * list_setup_count;
 
 ArrayList<Member_dto> dtos = dao.getList(select, search, start, end);
 int headNum = total_count-((current_page-1)*list_setup_count);
-
 %>
-<%@ include file="/common_head.jsp" %> 
+
 	
 		<div id="b_left">
 			<P>NOTICE & NEWS</P>
 			<ul>
-				<li><a href="/notice/notice_list.jsp"> NOTICE</a></li>
-				<li><a href="/news/news_list.jsp">NEWS</a></li>
-				<li><a href="/qanda/qanda_list.jsp">Q & A</a></li>
-				<li><a href="/freeboard/freeboard_list.jsp">FREE BOARD</a></li>
-				<li><a href="/etc/etc_list.jsp">ETC</a></li>
+				<li><a href="/member/admin_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>MANAGER</a></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
 			</ul>
 		</div>
 		<div id="b_right">
 			<p class="n_title">
 				Admin
 			</p>
-			<form name="admin" method="post" action="admin_list.jsp">
+			<form method="post" action="admin_list.jsp">
 			<p class="select_box">
 				<select class="sel_box" name="t_select">
 					<option value="name">Name</option>
@@ -71,16 +78,18 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 					<col width="15%">
 					<col width="15%">
 					<col width="20%">
-					<col width="25%">
+					<col width="20%">
+					<col width="5%">
 				</colgroup>
 				<thead>
 					<tr>
 						<th>no</th>
 						<th>ID</th>
 						<th>Name</th>
-						<th>Area</th>
+						<th>Gender</th>
 						<th>Level</th>
 						<th>Reg Date</th>
+						<th>Exit</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -90,9 +99,10 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 						<td class="t_center">
 						<a href="javascript:goView('<%=dtos.get(k).getId()%>')"><%=dtos.get(k).getId()%></a></td>
 						<td><%=dtos.get(k).getName() %></td>
-						<td><%=dtos.get(k).getArea() %></td>
+						<td><%=dtos.get(k).getGender() %></td>
 						<td><%=dtos.get(k).getLevel_gubun() %></td>
 						<td><%=dtos.get(k).getReg_date() %></td>
+						<td><%=dtos.get(k).getExit_gubun() %></td>
 					</tr>
 				<%} %>
 				</tbody>

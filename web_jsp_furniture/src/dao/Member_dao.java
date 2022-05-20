@@ -14,6 +14,45 @@ public class Member_dao {
 	PreparedStatement 	ps  = null;
 	ResultSet 			rs  = null;
 	
+	//아이디 리스트 받아오기
+		public ArrayList<Member_dto> getIdList(){
+			ArrayList<Member_dto> dtos = new ArrayList<>();
+			String query = " select id\n" + 
+					"    from homepage_박건일_member\n" + 
+					"    where exit_gubun = 'in'";
+			try {
+				con = DBConnection.getConnection();
+				ps = con.prepareStatement(query);
+				rs = ps.executeQuery();
+				while(rs.next()) {
+					String id = rs.getString("id");
+					Member_dto dto = new Member_dto(id);
+					dtos.add(dto);
+				}
+			}catch(SQLException e) {
+				e.printStackTrace();
+				System.out.println("getIdList() 오류: " + query);
+			}finally {
+				DBConnection.closeDB(con, ps, rs);
+			}
+			
+			return dtos;
+		}
+	
+	
+	
+	//성별 한글화
+		public String getSex(String gender) {
+			String sex ="";
+			if(gender.equals("m")) {
+				sex = "남자";
+			}else {
+				sex = "여자";
+			}
+			return sex;
+		}
+	
+	
 	//목록조회 전체
 		public int getTotalCount(String select,String search) {
 			int result = 0;
@@ -44,10 +83,14 @@ public class Member_dao {
 		String query = "select * from(\n" + 
 				"select tbl.*, rownum as rnum\n" + 
 				"from\n" + 
-				"(select id, name, area, TO_CHAR(reg_date,'yyyy-MM-dd') as reg_date, level_gubun\n" + 
-				"from homepage_박건일_member\n" + 
+				"(select id,name,\n" + 
+				"    decode(gender,'m','남','여') as gender,\n" + 
+				"    to_char(reg_date,'yyyy-MM-dd') as reg_date,\n" + 
+				"    decode(level_gubun,'member','회원','manager','직원','top','총관리자') as level_gubun,\n" + 
+				"    decode(exit_gubun,'in',' ','탈퇴') as exit_gubun\n" + 
+				"    from homepage_박건일_member\n" + 
 				"where "+select+" like '%"+search+"%'\n" + 
-				"order by level_gubun desc)tbl)\n" + 
+				"order by reg_date desc)tbl)\n" + 
 				"where rnum >="+start+" and rnum <="+end;
 		
 		try {
@@ -57,12 +100,13 @@ public class Member_dao {
 			while(rs.next()) {
 				String id = rs.getString("id");
 				String name = rs.getString("name");
-				String area = rs.getString("area");
+				String gender = rs.getString("gender");
 				String reg_date = rs.getString("reg_date");
 				String level_gubun = rs.getString("level_gubun");
+				String exit_gubun = rs.getString("exit_gubun");
 
 				//id, name, area, reg_date, level_gubun
-				Member_dto dto = new Member_dto(id, name, area, reg_date, level_gubun);
+				Member_dto dto = new Member_dto(id, name, gender, reg_date, level_gubun, exit_gubun);
 				dtos.add(dto);
 			}
 		}catch(SQLException e) {

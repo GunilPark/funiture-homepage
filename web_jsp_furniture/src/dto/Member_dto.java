@@ -4,12 +4,17 @@ public class Member_dto {
 	private String id,name,password,area,address,tell_1,tell_2,tell_3,
 				    gender,hobby_travel,hobby_reading,hobby_sports,
 				    reg_date,level_gubun,exit_gubun,exit_date;
-	public Member_dto(String id, String name, String area, String reg_date, String level_gubun) {
+	public Member_dto(String id) {
+		this.id = id;
+	}
+	
+	public Member_dto(String id, String name, String gender, String reg_date, String level_gubun, String exit_gubun) {
 		this.id = id;
 		this.name = name;
-		this.area = area;
+		this.gender = gender;
 		this.reg_date = reg_date;
 		this.level_gubun = level_gubun;
+		this.exit_gubun = exit_gubun;
 	}
 	
 	
