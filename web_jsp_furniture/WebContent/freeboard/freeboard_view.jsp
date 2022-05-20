@@ -60,6 +60,12 @@ if(dto == null){
 						<td><%=dto.getReg_date()%></td>
 					</tr>	
 
+					<tr>
+						<th>댓글</th>
+						<td colspan="3">
+							<textarea name="t_content" readonly class="textArea_H250_noBorder" readonly><%=dto.getContent() %></textarea>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<div class="buttonGroup">
