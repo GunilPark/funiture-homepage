@@ -56,6 +56,8 @@
 		margin-bottom:10px;
 //		background:green;	
 	}
+	
+	
 
 	#b_bottom{
 		clear:both;
@@ -218,12 +220,26 @@
 	.boardForm .t_center{
 		text-align:left;
 	}	
+	
+	.boardForm .butt{
+		float:right;
+		width:60px;
+		text-align:center;
+		padding:5px 10px;
+		background:#D8D8D8;
+		margin-left:5px;
+	}	
+	
 	.boardForm .input100{
 		width:100px;
 		height:22px;
 	}	
 	.boardForm .input130{
 		width:130px;
+		height:22px;
+	}	
+	.boardForm .input500{
+		width:500px;
 		height:22px;
 	}	
 	.boardForm .input600{
@@ -403,6 +419,8 @@
 	background: #b4b4b0;
 	color: #fff;
 }	
+
+
 	
 	
 	

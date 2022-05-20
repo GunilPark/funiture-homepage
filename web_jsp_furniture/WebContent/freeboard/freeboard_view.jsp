@@ -8,6 +8,8 @@ Free_dao dao = new Free_dao();
 String no = request.getParameter("t_no");
 dao.setHitCount(no);
 
+ArrayList<Comment_dto> dtos = dao.getComments(no);
+
 Free_dto dto = dao.getView(no);
 if(dto == null){
 	%>
@@ -37,8 +39,9 @@ if(dto == null){
 			<table class="boardForm">
 				<colgroup>
 					<col width="20%">
-					<col width="55%">
+					<col width="45%">
 					<col width="25%">
+					<col width="10%">
 				</colgroup>
 				<tbody>
 					<tr>
@@ -58,7 +61,42 @@ if(dto == null){
 						<td><%=dto.getReg_name()%></td>
 						<th>RegDate</th>
 						<td><%=dto.getReg_date()%></td>
+					</tr>
+					
+					<tr>
+						<th>댓글</th>
+						<td colspan="2">
+							<form name="comment">
+							<input type="hidden" name="t_no" value="<%=dto.getNo()%>">
+							<input name="t_comment" type="text" class="input500">
+							</form>	
+						</td>
+						<td>
+						<a href="javascript:goComment()" class="butt">댓글입력</a>
+						</td>
+					</tr>
+					<%for(int k = 0; k<dtos.size(); k++){ %>	
+					<tr>
+						<th>[<%=dao.getName(dtos.get(k).getReg_id()) %>]</th>
+						
+						<td id="fix" colspan="1">
+							<h4><%=dtos.get(k).getContent()%></h4>
+							<form name="save">
+							<input name="t_no" type="hidden" value="<%=dtos.get(k).getNo()%>">
+							<input name="t_no_order" type="hidden" value="<%=dtos.get(k).getNo_order()%>">
+							<input name="t_content" id="fixx" type="text" class="input500" value="<%=dtos.get(k).getContent()%>">
+							</form>
+						</td>
+						<th>[<%=dtos.get(k).getReg_date()%>]</th>
+						<%if(sessionId.equals(dtos.get(k).getReg_id())){ %>
+						<td id="all">
+						<a href="javascript:commentDelete('<%=dtos.get(k).getNo_order()%>')">[삭제]</a>  
+						<a href="javascript:commentUpdate('<%=dtos.get(k).getNo_order()%>','<%=k%>')">[수정]</a>
+						<a id="a_<%=k%>" href="javascript:commentSave()">[저장]</a>
+						</td>
+						<%} %>
 					</tr>	
+					<%} %>
 
 					<tr>
 						<th>댓글</th>
@@ -84,11 +122,20 @@ if(dto == null){
 <form name="free">
 <input name="t_no" value="<%=no%>">
 </form>
+<form name="sex">
+<input type="hidden" name="t_no" value="<%=no%>">
+<input type="hidden" name="t_no_order" value="">
+
+</form>
 
 </html>
 
 
 <script type="text/javascript">
+
+$("#fixx").hide();
+$("#a_2").hide();
+
 
 function goDelete(){
 	var goYesNo = confirm("정말삭제하시겠습니까?");
@@ -97,6 +144,40 @@ function goDelete(){
 		free.action="db_freeboard_delete.jsp";
 		free.submit();
 	}	
+
+}
+	
+	
+function goComment(){
+	
+	if(comment.t_comment.value == ""){
+		alert("댓글을 입력해주세요!")
+		return;
+	}
+	comment.method="post";
+	comment.action="db_freeboard_comment_save.jsp";
+	comment.submit();
+
+}
+
+function commentDelete(no_order){
+	sex.t_no_order.value = no_order;
+	sex.method="post";
+	sex.action="db_freeboard_comment_delete.jsp";
+	sex.submit();
+}
+
+function commentUpdate(no_order,k){
+	$("#fix h4").css("display","none");
+	$("#fixx").show();
+	$("#all a").hide();
+	$("#a_"+k).show();
+}
+
+function commentSave(){
+	save.method="post";
+	save.action="db_freeboard_comment_update.jsp";
+	save.submit();
 }
 
 
