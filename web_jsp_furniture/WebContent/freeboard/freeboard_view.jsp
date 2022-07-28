@@ -23,7 +23,7 @@ if(dto == null){
 		<div id="b_left">
 			<P>NOTICE & NEWS</P>
 			<ul>
-				<li><a href="notice_list.jsp">NOTICE</a></li>
+				<li><a href="../notice/notice_list.jsp"> NOTICE</a></li>
 				<li><a href="../news/news_list.jsp">NEWS</a></li>
 				<li><a href="../qanda/qanda_list.jsp">Q & A</a></li>
 				<li><a href="../freeboard/freeboard_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>FREE BOARD</a></li>
@@ -39,8 +39,8 @@ if(dto == null){
 			<table class="boardForm">
 				<colgroup>
 					<col width="20%">
-					<col width="45%">
-					<col width="25%">
+					<col width="40%">
+					<col width="30%">
 					<col width="10%">
 				</colgroup>
 				<tbody>
@@ -54,8 +54,11 @@ if(dto == null){
 						<td colspan="3">
 							<textarea name="t_content" readonly class="textArea_H250_noBorder" readonly><%=dto.getContent() %></textarea>
 						</td>
-					</tr>	
-				
+					</tr>
+					<tr>
+						<th>Attach</th>
+						<td colspan="3"><a href="/common/filedown.jsp?t_fileDir=freeboard&t_file?=<%=dto.getAttach()%>"><%=dto.getAttach()%></a></td>				
+					</tr>
 					<tr>
 						<th>Writer</th>
 						<td><%=dto.getReg_name()%></td>
@@ -79,20 +82,20 @@ if(dto == null){
 					<tr>
 						<th>[<%=dao.getName(dtos.get(k).getReg_id()) %>]</th>
 						
-						<td id="fix" colspan="1">
+						<td class="fix" id="fix<%=k%>" colspan="1">
 							<h4><%=dtos.get(k).getContent()%></h4>
 							<form name="save">
 							<input name="t_no" type="hidden" value="<%=dtos.get(k).getNo()%>">
 							<input name="t_no_order" type="hidden" value="<%=dtos.get(k).getNo_order()%>">
-							<input name="t_content" class="fixx" type="text" class="input500" value="<%=dtos.get(k).getContent()%>">
+							<input name="t_content" class="fixx" id="fixx<%=k%>" type="text" class="input500" value="<%=dtos.get(k).getContent()%>">
 							</form>
 						</td>
 						<th>[<%=dtos.get(k).getReg_date()%>]</th>
 						<%if(sessionId.equals(dtos.get(k).getReg_id())){ %>
 						<td id="all">
-						<a href="javascript:commentDelete('<%=dtos.get(k).getNo_order()%>')">[삭제]</a>  
-						<a href="javascript:commentUpdate('<%=dtos.get(k).getNo_order()%>','<%=k%>')">[수정]</a>
-						<a id="a_<%=k%>" href="javascript:commentSave()">[저장]</a>
+						<a class="aaa" href="javascript:commentDelete('<%=dtos.get(k).getNo_order()%>')">[삭제]</a>  
+						<a class="aaa" href="javascript:commentUpdate('<%=dtos.get(k).getNo_order()%>','<%=k%>')">[수정]</a>
+						<a class="bbb" href="javascript:commentSave('<%=dtos.get(k).getNo_order()%>','<%=k%>')">[저장]</a>
 						</td>
 						<%} %>
 					</tr>	
@@ -128,7 +131,7 @@ if(dto == null){
 <script type="text/javascript">
 
 $(".fixx").hide();
-$("#a_2").hide();
+$(".bbb").hide();
 
 
 function goDelete(){
@@ -162,13 +165,16 @@ function commentDelete(no_order){
 }
 
 function commentUpdate(no_order,k){
-	$("#fix h4").css("display","none");
-	$("#fixx").show();
-	$("#all a").hide();
-	$("#a_"+k).show();
+	var a = "#fix"+k+" h4";
+	var b = "#fixx"+k;
+	$(a).css("display","none"); //내용
+	$(b).show();				//인풋 박스
+	$(".aaa").hide();			//수정 삭제
+	$(".bbb").show();			//저장
 }
 
-function commentSave(){
+function commentSave(no_order,k){
+	save.t_content.value = $("#")
 	save.method="post";
 	save.action="db_freeboard_comment_update.jsp";
 	save.submit();

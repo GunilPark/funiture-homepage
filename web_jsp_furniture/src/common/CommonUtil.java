@@ -5,7 +5,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CommonUtil {
+	// 첨부파일 공지 사항 경로(notice)
+	public static String getFile_dir_notice(){
+		String dir = "C:/Users/pki32/Desktop/새 폴더/web_jsp_furniture/WebContent/attach/notice";
+		return dir;
+	}
+	// 첨부파일 공지 사항 경로(news)
+	public static String getFile_dir_news(){
+		String dir = "C:/Users/pki32/Desktop/새 폴더/web_jsp_furniture/WebContent/attach/news";
+		return dir;
+	}	
 	
+	// 첨부파일 공지 사항 경로(freeboard)
+	public static String getFile_dir_freeboard(){
+		String dir = "C:/Users/pki32/Desktop/새 폴더/web_jsp_furniture/WebContent/attach/free";
+		return dir;
+	}
 	
 	
 	

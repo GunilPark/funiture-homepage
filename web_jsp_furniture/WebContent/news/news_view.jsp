@@ -60,18 +60,13 @@ if(dto == null){
 					<tr>
 						<th>Content</th>
 						<td colspan="3">
-							<textarea name="t_content" class="textArea_H250_noBorder" readonly><%=dto.getContent() %></textarea>
+							<textarea name="t_content" class="textArea_H250_noBorder" readonly><%=dto.getContent()%></textarea>
 						</td>
 					</tr>	
 					<tr>
 						<th>Attach</th>
-						<td colspan="3">
-						<% if(dto.getAttach() == null){
-							dto.getAttach();
-						}
-						%>
-						</td>
-					</tr>	
+						<td colspan="3"><a href="/common/filedown.jsp?t_fileDir=news&t_file=<%=dto.getAttach()%>"><%=dto.getAttach()%></a></td>				
+					</tr>
 					<tr>
 						<th>Writer</th>
 						<td><%=dto.getReg_id() %></td>
@@ -83,7 +78,7 @@ if(dto == null){
 			</table>
 			<div class="buttonGroup">
 			<%if(sessionLevel.equals("top")||sessionLevel.equals("manager")){ %>
-				<a href="" class="butt">Delete</a>
+				<a href="javascript:goDelete()" class="butt">Delete</a>
 				<a href="news_update.jsp?t_no=<%=dto.getNo()%>" class="butt">Update</a>
 			<%} %>
 				<a href="news_list.jsp" class="butt">List</a>
@@ -94,8 +89,23 @@ if(dto == null){
 		</div>	
 	</div>	
 </body>
+<form name=news>
+<input name="t_no" value="<%=no%>">
+<input name="t_file" value="news">
+<input name="t_delete_attach" value="<%=CommonUtil.checkNull(dto.getAttach())%>">
+</form>
 </html>
+<script>
+function goDelete(){
+	var goYesNo = confirm("정말삭제하시겠습니까?");
+	if(goYesNo){
+		news.method="post";
+		news.action="db_news_delete.jsp";
+		news.submit();
+	}	
+}
 
+</script>
 <%} %>
 
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="dto.*,dao.*,java.util.*,common.*" %>
+<%@ page import="dto.*,dao.*,java.util.*,common.*" %>
+<%@ page import="com.oreilly.servlet.*,com.oreilly.servlet.multipart.*" %>
 <%@ include file="../common_head.jsp" %> 
 <%
 request.setCharacterEncoding("utf-8");
@@ -28,7 +29,7 @@ if(sessionLevel.equals(""))
 			<p class="n_title">
 				NEWS
 			</p>
-			<form name="news">
+			<form name="news" enctype="multipart/form-data">
 			<input type="hidden" name="t_no" value="<%=dto.getNo()%>">
 			<table class="boardForm">
 				<colgroup>
@@ -49,19 +50,20 @@ if(sessionLevel.equals(""))
 					</tr>	
 					<tr>
 						<th>Attach</th>
-						<td colspan="3"><%=dto.getAttach() %><input type="checkbox"><br>
+						<td colspan="3"><%=dto.getAttach()%><input name="t_del_attach" value="<%=dto.getAttach()%>" type="checkbox"><br>
 							<input name="t_attach" type="file" class="input600">
+							<input name="t_ori_attach" type="hidden" value="<%=CommonUtil.checkNull(dto.getAttach())%>">
 						</td>
 					</tr>	
 					<tr>
 						<th>Writer</th>
-						<td><input name="t_id" type="text" value="<%=dto.getReg_id() %>" class="input100"></td>
+						<td><input name="t_id" type="text" readonly value="<%=dto.getReg_id() %>" class="input100"></td>
 						<th>RegDate</th>
-						<td><input name="t_reg_date" type="date" value="<%=CommonUtil.getToday()%>" class="input130"></td>
+						<td><input name="t_reg_date" type="date" readonly value="<%=CommonUtil.getToday()%>" class="input130"></td>
 					</tr>	
-				</form>
 				</tbody>
 			</table>
+			</form>
 			<div class="buttonGroup">
 				
 				<a href="javascript:goUpdate()" class="butt">Save</a>
@@ -76,6 +78,44 @@ if(sessionLevel.equals(""))
 </html>
 <script>
 function goUpdate(){
+	var fileName = news.t_attach.value;
+	if(fileName !=""){
+		var pathFileName = fileName.lastIndexOf(".")+1;    //확장자 제외한 경로+파일명
+		var extension = (fileName.substr(pathFileName)).toLowerCase();	//확장자명
+		//파일명.확장자
+//		if(extension != "jpg" && extension != "gif" && extension != "png"){
+		if(extension != "pdf" && extension != "hwp"){
+			alert(extension +" 형식 파일은 업로드 안됩니다. 한글, PDF 파일만 가능!");
+			return;
+		}		
+	}
+		
+	//첨부 용량 체크	
+	var file = news.t_attach;
+	var fileMaxSize  = 5; // 첨부 최대 용량 설정
+	if(file.value !=""){
+		// 사이즈체크
+		var maxSize  = 1024 * 1024 * fileMaxSize;  
+		var fileSize = 0;
+
+		// 브라우저 확인
+		var browser=navigator.appName;
+		// 익스플로러일 경우
+		if (browser=="Microsoft Internet Explorer"){
+			var oas = new ActiveXObject("Scripting.FileSystemObject");
+			fileSize = oas.getFile(file.value).size;
+		}else {
+		// 익스플로러가 아닐경우
+			fileSize = file.files[0].size;
+		}
+		//alert("파일사이즈 : "+ fileSize);
+
+		if(fileSize > maxSize){
+			alert(" 첨부파일 사이즈는 "+fileMaxSize+"MB 이내로 등록 가능합니다. ");
+			return;
+		}	
+	}	
+	
 	if(checkValue(news.t_title,"제목 입력!")) return;
 	if(checkValue(news.t_content,"내용 입력!")) return;
 	if(checkValue(news.t_reg_date,"등록일자 입력!")) return;

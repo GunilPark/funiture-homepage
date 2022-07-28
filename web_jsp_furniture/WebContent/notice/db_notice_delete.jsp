@@ -1,10 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="dao.*, dto.*" %>
+<%@page import="dao.*, dto.*,java.io.*,common.*" %>
 <%
 request.setCharacterEncoding("utf-8");
 String no = request.getParameter("t_no");
 Notice_dao dao = new Notice_dao();
+String delete_attach = request.getParameter("t_delete_attach");
+String file_dir = CommonUtil.getFile_dir_notice();
+if(!delete_attach.equals("")){
+	File file = new File(file_dir,delete_attach);
+	file.delete();
+}
 
 
 int result = dao.getDelete(no);

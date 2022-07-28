@@ -18,7 +18,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <script type="text/javascript" src="../js/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
-
+<title>박건일</title>
 </head>
 <body>
 	<div id="container">
@@ -26,7 +26,7 @@
 		<div id="b_top_menu">
 				<ul class="top_menu">
 					<%  if(sessionLevel.equals("top")){ %>
-						<li><a href="../member/admin_list.jsp">Admin</a></li>
+						<li><a href="../admin/admin_list.jsp">Admin</a></li>
 					<%	} %>
 					
 					<%  if(sessionId.equals("")){ %>

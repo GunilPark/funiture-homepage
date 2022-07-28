@@ -1,13 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="dto.*,dao.*,java.util.*" %>
+    
 <%@ include file="../common_head.jsp" %>
-<%
-	request.setCharacterEncoding("utf-8");
-	Member_dao dao = new Member_dao();
-	ArrayList<Member_dto> dtos = dao.getIdList();
-
-%>
 	
 		<div id="b_left">
 			<P>MEMBER</P>
@@ -33,7 +27,9 @@
 				  <th><label for="id">I D</label></th>
 				  <td>
 					<input name="t_id" maxlength="10" type="text" size="10" id="id" title="id입력하세요">
-					<input type="button" onclick="checkId()" value="ID중복검사" class="checkB">
+					<input type="button" id="check" value="ID중복검사" class="checkB">
+					<input type="hidden" id="checkValue" value="" name="t_idCheck">
+					<span id="idReasult"></span>
 				  </td>
 				</tr>
 				<tr>
@@ -42,7 +38,7 @@
 				</tr>
 				<tr>
 				  <th>비빌번호</th>
-				  <td><input name="t_password"  maxlength="10" type="password" size="13"></td>
+				  <td><input name="t_password"  maxlength="10" type="password" size="13"></td>		  
 				</tr>
 				<tr>
 				  <th>비밀번호확인</th>
@@ -92,6 +88,7 @@
 			</form>
 <div class="buttonGroup_center">
 	<a href="javascript:goJoin()" class="butt">JOIN</a>
+	<input type="button" onclick="goJoin()" value="회원가입">
 <!--  	
 	<a href="member_login.jsp" class="butt">로그인</a>
 	<input type="button" onclick="goJoin()" value="회원가입">
@@ -107,15 +104,45 @@
 </html>
 
 <script type="text/javascript">
-	function checkId(){
-		var id = $("#id").val();
-		<%for(int k = 0; k < dtos.size() ;k++){
-			dtos.get(k).getId(); %>
-			
-			
-		<%}%>
+var check = false;
+$("#id").on("change keyup paste proportychange input",function(){
+	$("#idReasult").text("");
+	check = false;
+})
+
+$("#check").click(function(){
+	if(checkValue(join.t_id,"ID 입력!")){ 
+		return;
+	}else{
+		$.ajax({
+            type : "POST",
+            url : "member_checkId.jsp",
+            data: "t_id="+join.t_id.value,
+            dataType : "text",
+            error : function(){
+               alert('통신실패!!');
+            },
+            success : function(data){
+               $("#idReasult").text(data);
+               if($.trim(data) =="중복된 ID 사용 불가!"){
+            	   $("#idReasult").css("color","red");
+            	   check = false;
+            	   $("#checkValue").val("");
+               }else{
+            	   $("#idReasult").css("color","blue");
+            	   check = true;
+            	   $("#checkValue").val(join.t_id.value);
+               }
+               
+            }
+         });
 		
 	}
+
+})
+
+
+
 
 	function checkValue(obj,msg){
 		if(obj.value==""){
@@ -144,39 +171,26 @@
 		if(checkValue(join.t_tell_2,"두번째 연락처 입력!")) return;		
 		if(checkValue(join.t_tell_3,"세번째 연락처 입력!")) return;		
 
-		if(checkValue(join.t_gender,"성별을 선택하시오!")) return;		
-	
+		if(checkValue(join.t_gender,"성별을 선택하시오!")) return;
+		if(check == false){
+			alert("id중복체크(사용가능한 아이디 입력 바람)!");
+			join.t_id.focus();
+			return;
+		}
+		if(join.t_id.value != join.t_idCheck.value){
+			alert("변경된 id중복체크(사용가능한 아이디 입력 바람)!");
+			join.t_id.focus();
+			return;
+		}
 		
 		join.method="post";
 		join.action="db_member_join.jsp";
 		join.submit();
 		
-/*		
-		if(join.t_id.value ==""){
-			alert("ID 입력!");
-			join.t_id.focus();
-			return;
-		}
-		if(join.t_name.value ==""){
-			alert("성명 입력!");
-			join.t_name.focus();
-			return;
-		}
-*/		
 	}
 
 </script>
 <script type="text/javascript">
-    //<![CDATA[
-    $(function(){
-    	$(".main_menu > li > a").mouseover(function(){
-			$(".main_menu li div").hide();
-			$(this).next().slideDown(500);
-    	});    
-    	$(".main_menu").mouseleave(function(){
-			$(".main_menu li div").stop().slideUp(500);
-		}) 
-    });     
-    //]]>
+
 </script> 
 

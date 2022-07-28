@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="dao.*,dto.*,java.util.*" %>    
 <%
+
 	String sessionId    = (String)session.getAttribute("sessionId");
 	String sessionName  = (String)session.getAttribute("sessionName");
 	String sessionLevel = (String)session.getAttribute("sessionLevel");
@@ -10,13 +12,20 @@
 		sessionName ="";
 		sessionLevel="";
 	}
+	//notice리스트
+	Notice_dao dao = new Notice_dao();
+	ArrayList<Notice_dto> dtos = dao.getList("a.title", "", 1, 7);
+	
+	//furniture리스트
+	Member_dao Mdao = new Member_dao();
+	ArrayList<Furniture_dto> Mdtos = Mdao.getFurnitureList();
 %>    
 <html>
 <head>
 <link href="css/index_c.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>	
-<title>홍길동</title>
+<title>박건일</title>
 <script type="text/javascript">
 	$(function(){
 		$(".main_menu > li > a").hover(function(){
@@ -72,9 +81,21 @@
 		});
 
 	});	
+	
+	
+	function goView(no){
+		view.t_no.value=no;
+		view.method = "post";
+		view.action = "notice/notice.view.jsp?t_no="+no;
+		view.submit();
+	}
+	
 </script>
 </head>
 <body>
+<form name="view">
+<input type="hidden" name="t_no">
+</form>
 <style>
 #disableDiv { position:absolute; left:0; top:0;width:100%; height:1700px; z-index:995 ; background-color:#EEEEEE; filter:Alpha(opacity=80);opacity:0.8; -moz-opaciry:0.8}
 </style>
@@ -87,7 +108,7 @@
 					<li><a href="" class="allclick"><i class="fas fa-bars"></i></a></li>
 					
 					<%  if(sessionLevel.equals("top")){ %>
-						<li><a href="member/admin_list.jsp">Admin</a></li>
+						<li><a href="admin/admin_list.jsp">Admin</a></li>
 					<%	} %>
 					
 					<%  if(sessionId.equals("")){ %>
@@ -201,58 +222,32 @@
 		<div id="b_top_2">
 			<ul class="b_top_menu">
 				<li><a href=""><img src="images/bu_01.jpg" class="bu_1"></a></li>
-				<li><a href=""><img src="images/bu_02.jpg" class="bu_1"></li>
+				<li><a href=""><img src="images/bu_02.jpg" class="bu_1"></a></li>
 				<li><a href=""><img src="images/bu_03.jpg" class="bu_1"></a></li>
 				<li><a href=""><img src="images/bu_04.jpg" class="bu_1"></a></li>
 				<li><a href=""><img src="images/bu_05.jpg" class="bu_1"></a></li>
 				<li><a href=""><img src="images/bu_06.jpg" class="bu_1"></a></li>
 			</ul>
-		</div>		
+		</div>	
+			
 		<hr><br>
 		<div id="b_left">
 			<p class="left_top">
 				<img src="images/left_top.jpg"><a href="notice/notice_list.jsp"><img src="images/left_right.jpg"></a>
 			</p>
 			<div class="left_middle">
+			<%for(int i=0; i<dtos.size(); i++){ %>
 				<ul>
-					<li class="noti_title"><a href="">7.Convert between color formats</a></li>
-					<li class="noti_date">20-07-14</li>
+					<li class="noti_title"><a href="notice/notice_view.jsp?t_no=<%=dtos.get(i).getNo() %>"><%=dao.sizeDown(dtos.get(i).getTitle()) %></a></li>
+					<li class="noti_date"><%=dtos.get(i).getReg_date().substring(2) %></li>
 				</ul>
-				<ul>
-					<li class="noti_title"><a href="">6.회원운영정책 변경안내</a></li>
-					<li class="noti_date">20-07-14</li>
-				</ul>
-				<ul>
-					<li class="noti_title"><a href="">5.회원운영정책 변경안내</a></li>
-					<li class="noti_date">20-07-14</li>
-				</ul>
-				<ul>
-					<li class="noti_title"><a href="">4.회원운영정책 변경안내</a></li>
-					<li class="noti_date">20-07-14</li>
-				</ul>
-				<ul>
-					<li class="noti_title"><a href="">3.회원운영정책 변경안내</a></li>
-					<li class="noti_date">20-07-14</li>
-				</ul>
-				<ul>
-					<li class="noti_title"><a href="">2.회원운영정책 변경안내</a></li>
-					<li class="noti_date">20-07-14</li>
-				</ul>
-				<ul>
-					<li class="noti_title"><a href="">1.회원운영정책 변경안내</a></li>
-					<li class="noti_date">20-07-14</li>
-				</ul>
+			<% } %>
 			</div>
 		
 		</div>
 		<div id="b_center">
 			<p class="b_center_top"><img src="images/center_top.jpg"></p>
-			<p class="b_center_middle">
-				<a href=""><img src="images/center_middle_1.jpg"><a href=""><img src="images/center_middle_2.jpg"><a href=""><img src="images/center_middle_3.jpg"></a>
-			</p>
-			<p class="b_center_bottom">
-				<a href=""><img src="images/center_middle_4.jpg"><a href=""><img src="images/center_middle_5.jpg"><a href=""><img src="images/center_middle_6.jpg"></a>
-			</p>
+			<p class="b_center_middle"><%if(Mdtos.size() >= 6){for(int k = 0; k<6; k++){%><a href="/admin/furniture_view.jsp?t_no=<%=Mdtos.get(k).getNo()%>"><img src="/attach/furniture/<%=Mdtos.get(k).getAttach()%>"></a><%}%><%}else if(Mdtos.size()<6){%><%for(int k = 0; k<Mdtos.size(); k++){%><a href="/admin/furniture_view.jsp?t_no=<%=Mdtos.get(k).getNo()%>"><img src="/attach/furniture/<%=Mdtos.get(k).getAttach()%>"></a><%}}%></p>
 		</div>
 		<div id="b_right">
 			<img src="images/center_right.jpg">

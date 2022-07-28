@@ -7,7 +7,8 @@
 	
 	String  id            = request.getParameter("t_id");
 	String  name          = request.getParameter("t_name");
-	String  password      = request.getParameter("t_password");
+	String  password      = dao.encryptSHA256(request.getParameter("t_password"));
+	int  pw_lenght	  	  = request.getParameter("t_password").length();
 	String  area          = request.getParameter("t_area");
 	String  address       = request.getParameter("t_address");
 	String  tell_1        = request.getParameter("t_tell_1");
@@ -18,13 +19,14 @@
 	String  hobby_reading = request.getParameter("t_hobby_reading");
 	String  hobby_sports  = request.getParameter("t_hobby_sports");
 	String  reg_date      = CommonUtil.getToday();
-
+	
+	System.out.print(pw_lenght);
 	if(hobby_travel == null) hobby_travel ="n";
 	if(hobby_reading == null) hobby_reading ="n";
 	if(hobby_sports == null) hobby_sports ="n";
 	
 	Member_dto dto = 
-		new Member_dto(id,name,password,area,address,tell_1,tell_2,tell_3,
+		new Member_dto(id,name,password,pw_lenght,area,address,tell_1,tell_2,tell_3,
 				gender,hobby_travel,hobby_reading,hobby_sports,
 				reg_date,"","","");
 	

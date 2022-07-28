@@ -134,10 +134,30 @@ public class News_dao {
 		}
 		return dto;		
 	}
+	//삭제
+	public int getDelete(String no) {
+		int result =0;
+		String query="delete from homepage_박건일_news\r\n" + 
+				"where no ='"+no+"'"; 
+		try {
+			con = DBConnection.getConnection();
+			ps  = con.prepareStatement(query);
+			result  = ps.executeUpdate();
+		}catch(Exception e) {
+			System.out.println("getDelete() 오류:"+query);
+			e.printStackTrace();
+		}finally {
+			DBConnection.closeDB(con, ps, rs);
+		}		
+		return result;
+	}
+	
+	
 	// 등록
 	public int newsSave(News_dto dto){
 		int result =0;
 		String query="insert into homepage_박건일_news\r\n" + 
+				//no,title,content,attach,hit,reg_id,reg_date
 				" (no,title,content,attach,reg_id,reg_date)\r\n" + 
 				" values\r\n" + 
 				" ('"+dto.getNo()+"','"+dto.getTitle()+"','"+dto.getContent()+"','"+dto.getAttach()+"','"+dto.getReg_id()+"','"+dto.getReg_date()+"')" ; 

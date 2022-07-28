@@ -1,6 +1,6 @@
 package dao;
 
-import java.sql.Connection;
+import java.sql.Connection; 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +13,18 @@ public class Notice_dao{
 	Connection 			con = null;
 	PreparedStatement 	ps  = null;
 	ResultSet 			rs  = null;
+	
+	//사이즈 줄이기
+	public String sizeDown(String title) {
+		String result = title;
+		if(title.length() > 14) {
+			result = result.substring(0, 14);
+			result += "...";
+		}
+			
+		return result;
+	}
+	
 	
 	//조회수 증가
 	public void setHitCount(String no) {
@@ -79,8 +91,6 @@ public class Notice_dao{
 		}finally {
 			DBConnection.closeDB(con, ps, rs);
 		}
-
-		System.out.println(query);
 		return result;
 	}
 	
@@ -124,7 +134,7 @@ public class Notice_dao{
 		return result;
 	}
 	
-	// 번호 조회
+	// 번호 생성
 	public String getMaxNo() {
 		String no="";
 		String query =" select nvl(max(no),'N000') "+

@@ -88,7 +88,11 @@
 						<td><a href="notice_view.jsp?t_no=<%=dtos.get(k).getNo()%>"><%=headNum-k %></a></td>
 						<td class="t_center">
 						<a href="javascript:goView('<%=dtos.get(k).getNo()%>')"><%=dtos.get(k).getTitle() %></a></td>
-						<td><img src="../images/clip.png"></td>
+						<td>
+						<%if(dtos.get(k).getAttach() != null){ %>
+						<img src="../images/clip.png">
+						<%}%>
+						</td>
 						<td><%=dtos.get(k).getReg_id() %></td>
 						<td><%=dtos.get(k).getReg_date() %></td>
 						<td><%=dtos.get(k).getHit() %></td>

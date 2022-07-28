@@ -39,11 +39,11 @@
 		<div id="b_left">
 			<P>FREE BOARD</P>
 			<ul>
-				<li><a href="/notice/notice_list.jsp"> NOTICE</a></li>
-				<li><a href="/news/news_list.jsp">NEWS</a></li>
-				<li><a href="/qanda/qanda_list.jsp">Q & A</a></li>
-				<li><a href="/freeboard/freeboard_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>FREE BOARD</a></li>
-				<li><a href="/etc/etc_list.jsp">ETC</a></li>
+				<li><a href="../notice/notice_list.jsp"> NOTICE</a></li>
+				<li><a href="../news/news_list.jsp">NEWS</a></li>
+				<li><a href="../qanda/qanda_list.jsp">Q & A</a></li>
+				<li><a href="../freeboard/freeboard_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>FREE BOARD</a></li>
+				<li><a href="../etc/etc_list.jsp">ETC</a></li>
 			</ul>
 		</div>
 		
@@ -65,15 +65,17 @@
 			<table class="boardList">
 				<colgroup>
 					<col width="5%">
-					<col width="65%">
+					<col width="60%">
+					<col width="5%">
 					<col width="10%">
-					<col width="14%">
-					<col width="6%">
+					<col width="15%">
+					<col width="5%">
 				</colgroup>
 				<thead>
 					<tr>
 						<th>No</th>
 						<th>Title</th>
+						<th>Attach</th>
 						<th>Reg Name</th>
 						<th>Reg Date</th>
 						<th>Hit</th>
@@ -84,6 +86,11 @@
 					<tr>
 						<th><a href="freeboard_view.jsp?t_no=<%=dtos.get(k).getNo()%>"><%=headNum-k %></a></th>
 						<th><a href="javascript:goView('<%=dtos.get(k).getNo()%>')"><%=dtos.get(k).getTitle() %></a></th>
+						<th>
+						<%if(dtos.get(k).getAttach() != null){ %>
+						<img src="../images/clip.png">
+						<%}%>
+						</th>
 						<th><%=dtos.get(k).getReg_name() %></th>
 						<th><%=dtos.get(k).getReg_date() %></th>
 						<th><%=dtos.get(k).getHit() %></th>

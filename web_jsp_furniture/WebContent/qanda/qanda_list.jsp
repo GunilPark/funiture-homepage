@@ -45,11 +45,11 @@ int headNum = total_count-((current_page-1)*list_setup_count);
 		<div id="b_left">
 			<P>NOTICE & NEWS</P>
 			<ul>
-				<li><a href="/notice/notice_list.jsp"> NOTICE</a></li>
-				<li><a href="/news/news_list.jsp">NEWS</a></li>
-				<li><a href="/qanda/qanda_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>Q & A</a></li>
-				<li><a href="/freeboard/freeboard_list.jsp">FREE BOARD</a></li>
-				<li><a href="/etc/etc_list.jsp">ETC</a></li>
+				<li><a href="../notice/notice_list.jsp"> NOTICE</a></li>
+				<li><a href="../news/news_list.jsp">NEWS</a></li>
+				<li><a href="../qanda/qanda_list.jsp"><span class="fnt"><i class="fas fa-apple-alt"></i></span>Q & A</a></li>
+				<li><a href="../freeboard/freeboard_list.jsp">FREE BOARD</a></li>
+				<li><a href="../etc/etc_list.jsp">ETC</a></li>
 			</ul>
 		</div>
 		<div id="b_right">

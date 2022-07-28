@@ -113,7 +113,7 @@ public class Free_dao {
 	public int commentSave(Comment_dto dto) {
 		int result = 0;
 		String query = "insert into homepage_박건일_comment\r\n" + 
-				"(no,no_order,content,reg_id,reg_date)\r\n" + 
+				"(no,no_order,content,reg_id,reg_date,attach)\r\n" + 
 				"values\r\n" + 
 				"('"+dto.getNo()+"','"+dto.getNo_order()+"','"+dto.getContent()+"','"+dto.getReg_id()+"','"+dto.getReg_date()+"')";
 		try{
@@ -179,16 +179,16 @@ public class Free_dao {
 		public int freeSave(Free_dto dto) {
 			int result = 0;
 			String query ="INSERT INTO homepage_박건일_freeboard\r\n" + 
-					"(no,title,content,hit,reg_id,reg_name,reg_date)\r\n" + 
+					"(no,title,content,hit,reg_id,reg_name,reg_date,attach)\r\n" + 
 					"values\r\n" + 
-					"('"+dto.getNo()+"','"+dto.getTitle()+"','"+dto.getContent()+"',0,'"+dto.getReg_id()+"','"+dto.getReg_name()+"','"+dto.getReg_date()+"')";
+					"('"+dto.getNo()+"','"+dto.getTitle()+"','"+dto.getContent()+"',0,'"+dto.getReg_id()+"','"+dto.getReg_name()+"','"+dto.getReg_date()+"','"+dto.getAttach()+"')";
 			try{
 				con = DBConnection.getConnection();
 				ps = con.prepareStatement(query);
 				result = ps.executeUpdate();
 			}catch(SQLException e) {
 				e.printStackTrace();
-				System.out.println("query:" + query);
+				System.out.println("freeSave() 오류 :" + query);
 			}finally {
 				DBConnection.closeDB(con, ps, rs);
 			}
@@ -333,7 +333,7 @@ public class Free_dao {
 			String query="select * from(\r\n" + 
 					"select tbl.*, rownum as rnum\r\n" + 
 					"from\r\n" + 
-					"(select no,title,content,hit,reg_id,reg_name,to_char(reg_date,'yyyy-MM-dd') as reg_date\r\n" + 
+					"(select no,title,content,hit,reg_id,reg_name,to_char(reg_date,'yyyy-MM-dd') as reg_date,attach\r\n" + 
 					"from homepage_박건일_freeboard\r\n" + 
 					"where "+select+" like '%"+search+"%' \r\n" + 
 					"order by no desc)tbl) \r\n" + 
@@ -350,7 +350,8 @@ public class Free_dao {
 					String reg_id = rs.getString("reg_id");
 					String reg_name = rs.getString("reg_name");
 					String reg_date = rs.getString("reg_date");
-					Free_dto dto = new Free_dto(no,title,content,hit,reg_id,reg_name,reg_date);
+					String attach = rs.getString("attach");
+					Free_dto dto = new Free_dto(no,title,content,hit,reg_id,reg_name,reg_date,attach);
 					dtos.add(dto);
 				}
 			}catch(SQLException e) {

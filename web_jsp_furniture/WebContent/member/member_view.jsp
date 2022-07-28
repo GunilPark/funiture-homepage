@@ -7,13 +7,9 @@
     
 <%@ page import="dao.*,dto.*" %>    
 <%	
-
+	request.setCharacterEncoding("utf-8");
 	Member_dao dao = new Member_dao();
 	Member_dto dto = null;
-	String id = request.getParameter("t_id");
-	if(id == null){
-		id = "admin";
-	}
 	String key = "";
 	if(sessionId.equals("")){
 %>
@@ -22,13 +18,11 @@
 			location.href="member_login.jsp";
 		</script>	
 <%		
-	}else if(sessionLevel.equals("top")){
-		dto = dao.getMemberView(id);
-		key = id;
 	}else {
 		dto = dao.getMemberView(sessionId);
+		out.print(dto.getId());
 		key = sessionId;
-	}
+	
 %>    	
 	
 		<div id="b_left">
@@ -59,7 +53,7 @@
 				</tr>
 				<tr>
 				  <th>비빌번호</th>
-				  <td><%=dto.getPassword()%></td>
+				  <td><%for(int k = 0; k < dto.getPw_lenght(); k++){out.print("*");}%></td>
 				</tr>
 				<tr>
 				  <th>지역</th>
@@ -102,18 +96,12 @@
 				  <td><%=dto.getReg_date()%>
 				  </td>
 				</tr>
-				<%if(sessionLevel.equals("top")){ %>
-				<tr>
-				  <th>권한</th>
-				  <td><%=dto.getLevel_gubun() %>
-				  </td>
-				</tr>
-				<% } %>
 			  </tbody>
 			</table>
 			</form>
 <div class="buttonGroup_center">
 	<a href="javascript:goUpdateForm('<%=key%>')" class="butt">정보 수정</a>
+	<a href="javascript:goDeleteForm('<%=key%>')" class="butt">회원 탈퇴</a>
 <!--  	
 	<a href="member_login.jsp" class="butt">로그인</a>
 	<input type="button" onclick="goJoin()" value="회원가입">
@@ -127,11 +115,8 @@
 </body>
 </html>
 <form name="update">
-<%if(sessionLevel.equals("top")){ %>
-<input name="t_id" type="hidden" value="<%=id%>">
-<%}else{ %>
 <input name="t_id" type="hidden" value="<%=sessionId%>">
-<%} %>
+<input name="t_pw" type="hidden" value="<%=dto.getPassword()%>">
 </form>
 <script type="text/javascript">
 	function goUpdateForm(key){
@@ -140,17 +125,20 @@
 		update.action ="member_update.jsp";
 		update.submit();
 	}
+	function goDeleteForm(key){
+		if(confirm("정말 타퇴 하시겠습니까?")){
+			var pw =prompt("비밀번호를 입력하시오!");
+			if(update.t_pw.value == pw){
+				update.t_id.value = key;
+				update.method ="post";
+				update.action ="db_member_delete.jsp";
+				update.submit();
+			}else{
+				alert("비밀번호 입력 오류!!")
+			}
+		}
+		
+	}
+	
 </script>
-<script type="text/javascript">
-    //<![CDATA[
-    $(function(){
-    	$(".main_menu > li > a").mouseover(function(){
-			$(".main_menu li div").hide();
-			$(this).next().slideDown(500);
-    	});    
-    	$(".main_menu").mouseleave(function(){
-			$(".main_menu li div").stop().slideUp(500);
-		}) 
-    });     
-    //]]>
-</script> 
+<%}%>

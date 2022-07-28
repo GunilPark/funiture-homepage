@@ -6,7 +6,7 @@
 	request.setCharacterEncoding("utf-8");
 	Member_dao dao  = new Member_dao();
 	String id 		= request.getParameter("t_id");
-	String password = request.getParameter("t_password");
+	String password = dao.encryptSHA256(request.getParameter("t_password"));
 	
 	//String loginName = dao.checkLogin(id, password);
 	ArrayList<String> info = dao.checkLogin(id, password);

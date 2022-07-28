@@ -63,10 +63,9 @@ if(dto == null){
 					<tr>
 						<th>Attach</th>
 						<td colspan="3">
-						<% if(dto.getAttach() == null){
-							dto.getAttach();
-						}
-						%>
+						<%if(dto.getAttach() != null){ %>
+						<a href="/common/filedown.jsp?t_fileDir=notice&t_file=<%=dto.getAttach()%>"><%=dto.getAttach() %></a>
+						<%} %>
 						</td>
 					</tr>	
 					<tr>
@@ -88,13 +87,16 @@ if(dto == null){
 		</div>	
 
 		<%@ include file="../common_footer.jsp" %>		
-		</div>	
 	</div>	
 </body>
 <form name=noti>
 <input name="t_no" value="<%=no%>">
+<input name="t_delete_attach" value="<%=CommonUtil.checkNull(dto.getAttach())%>">
 </form>
-
+<form name="attach">
+<input type="hidden" name="t_fileDir" value="notice">
+<input type="hidden" name="t_file" value="">
+</form>
 </html>
 
 
@@ -109,6 +111,15 @@ function goDelete(){
 	}	
 }
 
+function getAttach(attach){
+	
+	alert(attach);
+	attach.t_file.value=attach;
+	alert("진행2");
+	attach.action="/common/filedown.jsp?t_fileDir=notice&t_file"+attach;
+	alert("진행3");
+	attach.submit();
+}
 
 </script>
 
