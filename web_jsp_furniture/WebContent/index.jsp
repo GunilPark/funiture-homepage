@@ -7,6 +7,7 @@
 	String sessionName  = (String)session.getAttribute("sessionName");
 	String sessionLevel = (String)session.getAttribute("sessionLevel");
 
+	
 	if(sessionId == null){
 		sessionId   ="";
 		sessionName ="";
@@ -208,7 +209,7 @@
 -->				
 			</div>
 			<ul class="main_menu">
-				<li><a href="">Office</a></li>
+				<li><a href="">오피스</a></li>
 				<li><a href="">Wooden</a></li>
 				<li><a href="">Sofa</a></li>
 				<li><a href="">kKtchen</a></li>
